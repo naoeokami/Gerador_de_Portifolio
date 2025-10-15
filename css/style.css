@@ -1,7 +1,3 @@
-.login {
-    background: url("https://images.unsplash.com/photo-1748797391402-615fa8b74c84?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") center center / cover no-repeat;
-}
-
 :root {
     font-family: sans-serif;
     margin: 0px;
@@ -10,62 +6,77 @@
     --c3: #323232;
 }
 
+.login {
+    background: url("https://images.unsplash.com/photo-1748797391402-615fa8b74c84?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") center center / cover no-repeat;
+}
+
+
 .login_main {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    box-sizing: border-box;
 }
 
 .logo_login {
-    width: 20vw;
-    margin: 60px auto;
+    max-width: 300px;
+    width: 60%;
+    margin: 40px auto 30px;
     display: block;
 }
 
 .login_div {
-    border-radius: 5vmin;
+    border-radius: 20px;
     background: var(--c1);
-    box-shadow: 0 0 5vmin -10px rgba(0, 0, 0, 0.25);
-    width: 50vmin;
-    height: 60vmin;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 400px;
+    min-height: 500px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
 }
 
 .login_h3 {
     text-align: center;
-    margin-top: 8vmin;
-    font-size: 4vmin;
+    margin: 20px 0 30px;
+    font-size: clamp(1.5rem, 4vw, 2rem);
 }
 
 #login,
 #senha {
     border: 0;
-    border-radius: 0.5vh;
-    background-color: #eaeaea;
-    width: 90%;
-    height: 5vmin;
-    margin: 10px 5%;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    border-radius: 8px;
+    background-color: var(--c2);
+    width: 100%;
+    height: 35px;
+    margin: 10px 0;
+    padding: 0 15px;
+    box-sizing: border-box;
+    text-align: left;
     font-size: 1rem;
 }
 
 .botao_login {
     border: 0;
-    border-radius: 2vh;
+    border-radius: 8px;
     background-color: var(--c3);
-    width: 90%;
-    height: 6vmin;
-    margin: 10px 5%;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    width: 100%;
+    height: 50px;
+    margin: 20px 0 10px;
     color: var(--c1);
     font-weight: bold;
-    font-size: 3vh;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.botao_login:hover {
+    background-color: var(--c2);
+    color: var(--c3);
 }
 
 .cadastro,
@@ -73,32 +84,35 @@
 .cadastro:visited {
     text-decoration: none;
     text-align: center;
-    align-items: center;
-    justify-content: center;
     color: var(--c3);
     display: block;
-    margin: 1% 5%;
-    font-size: 2vh;
+    margin: 15px 0;
+    font-size: 0.9rem;
+}
+
+.cadastro:hover {
+    text-decoration: underline;
 }
 
 .header {
     width: 100%;
-    height: 71px;
-    position: relative;
-    box-shadow: 0 0 5vmin -10px rgb(0, 0, 0);
     height: 70px;
-
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: var(--c1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 .header_logo {
-    position: absolute;
-    margin: 5px auto auto 5px;
-    height: 50px;
+    height: 40px;
+    width: auto;
 }
 
 .header_user {
-    position: relative;
-    margin: 5px 5px auto auto;
-    width: 50px;
-    float: right;
+    width: 40px;
+    height: 40px;
 }
