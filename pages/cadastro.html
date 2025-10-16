@@ -1,11 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="login" lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - FolioLabs</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
-    
+
+<body class="login">
+    <main class="login_main">
+        <div class="login_div">
+
+            <img class="logo_login" src="../img/logo.png" alt="logo">
+            <h1 class="login_h3">Cadastro</h1>
+            <form action="">
+                <input type="text" name="name" class="input_dados" id="name" placeholder="Digite seu nome" required>
+                <input type="email" name="email" class="input_dados" id="email" placeholder="Digite seu email" required>
+                <input type="password" name="senha" class="input_dados" id="senha" placeholder="Digite sua senha"
+                    required>
+                <input type="password" name="confirmar_senha" class="input_dados" id="confirmar_senha"
+                    placeholder="Confirme sua senha" required>
+                <button type="submit" class="botao_login" id="cadastrarUser">Cadastrar</button>
+            </form>
+            <a class="cadastro" href="../index.html">Já tem Cadastro? Clique aqui para voltar ao login</a>
+            <div id="mensagem" style="display: none;"></div>
+        </div>
+    </main>
+
+    <script src="../js/script.js"></script>
 </body>
+
 </html>
