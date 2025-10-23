@@ -6,7 +6,7 @@
     --c3: #323232;
     --error: #ff4444;
     --success: #44ff44;
-    --margin_menu: 110px
+    --margin: 110px
 }
 
 .login {
@@ -64,7 +64,7 @@
     transition: all 0.2s ease-in-out;
 }
 
-.input_dados:hover{
+.input_dados:hover {
     background-color: var(--c1);
 }
 
@@ -120,20 +120,20 @@ header {
 
 .header_logo {
     height: 40px;
-    left: var(--margin_menu);
+    left: var(--margin);
     top: 20px;
     position: absolute;
 }
 
 .header_user {
     width: 40px;
-    right: var(--margin_menu);
+    right: var(--margin);
     top: 20px;
     position: absolute;
 }
 
 main {
-    padding: 90px var(--margin_menu);
+    padding: 90px var(--margin);
     display: flex;
 }
 
@@ -141,13 +141,14 @@ main {
     font-size: 30px;
     position: absolute;
     top: 50%;
-    left: var(--margin_menu);
+    left: var(--margin);
     transform: translateY(-50%);
 }
 
 #nome_user {
     margin-top: -35px;
     font-size: 80px;
+    font-weight: bold;
 }
 
 footer {
@@ -163,8 +164,13 @@ footer {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @media (max-width: 768px) {
@@ -173,13 +179,43 @@ footer {
         min-height: 450px;
         border-radius: 15px;
     }
+
 }
 
-@media (max-width: 470px) {
+@media (max-width: 610px) {
     .login_div {
         max-width: 100%;
         min-height: 400px;
         border-radius: 12px;
         padding: 15px;
     }
+
+    :root {
+        --margin: 50px;
+    }
+
+    main {
+        margin: 0;
+        text-align: center;
+    }
+
+    .welcome_user {
+        position: relative;
+        display: flex;
+        top: 30px;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+        left: auto;
+    }
+
+    #nome_user, .welcome_user {
+        margin-top: auto;
+        font-size: 20px;
+    }
+
+    footer{
+        font-size: 12px;
+    }
+
 }
