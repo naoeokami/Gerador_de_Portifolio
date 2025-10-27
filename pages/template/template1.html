@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio - [Nome]</title>
+    <style>
+        /* ===== RESET E VARIÁVEIS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #f8f9fa;
+            --lighter: #ffffff;
+            --border: #e9ecef;
+            --text: #2c3e50;
+            --text-light: #6c757d;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.12);
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* ===== LAYOUT PRINCIPAL ===== */
+        .portfolio-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--lighter);
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        .portfolio-header {
+            background: var(--lighter);
+            padding: 60px 40px 40px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-container {
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            max-width: 180px;
+            height: auto;
+        }
+
+        .personal-info {
+            padding: 0 20px;
+        }
+
+        .profile-image {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 4px solid var(--lighter);
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--lighter);
+            font-size: 3rem;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .profile-image::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: -1;
+        }
+
+        .name {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profession {
+            font-size: 1.4rem;
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ===== SEÇÕES ===== */
+        .section {
+            padding: 60px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--text);
+            margin-bottom: 40px;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        /* ===== SOBRE MIM ===== */
+        .about-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            max-width: 800px;
+        }
+
+        .about-content p {
+            margin-bottom: 20px;
+        }
+
+        /* ===== CONTATO ===== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 25px;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--secondary);
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--lighter);
+            font-size: 1.2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 8px;
+            color: var(--text);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .contact-info p {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* ===== CONHECIMENTOS E HABILIDADES ===== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .skills-category {
+            background: var(--light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border);
+        }
+
+        .skills-category h3 {
+            color: var(--text);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .skill-tag {
+            background: var(--lighter);
+            color: var(--text);
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .skill-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--secondary);
+        }
+
+        .skill-tag.soft {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--lighter);
+            border: none;
+        }
+
+        /* ===== EXPERIÊNCIA ===== */
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding-left: 80px;
+        }
+
+        .timeline-date {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 60px;
+            height: 60px;
+            background: var(--lighter);
+            color: var(--text);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.2;
+            font-size: 0.8rem;
+            border: 3px solid;
+            border-image: linear-gradient(135deg, #667eea, #764ba2) 1;
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-content {
+            background: var(--light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .timeline-content:hover {
+            transform: translateX(10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .timeline-content h3 {
+            color: var(--text);
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .timeline-content .company {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* ===== FORMAÇÃO ===== */
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .education-item {
+            background: var(--light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .education-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+        }
+
+        .education-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .education-item h3 {
+            color: var(--text);
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .education-item .institution {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .education-dates {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* ===== TRABALHOS ===== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--lighter);
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .project-image {
+            height: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--lighter);
+            font-size: 1.8rem;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+        }
+
+        .project-content {
+            padding: 30px;
+        }
+
+        .project-content h3 {
+            color: var(--text);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .project-content p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--lighter);
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .project-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* ===== FOOTER ===== */
+        .portfolio-footer {
+            background: var(--light);
+            color: var(--text);
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-logo {
+            max-width: 120px;
+            margin: 0 auto 20px;
+            opacity: 0.7;
+        }
+
+        .footer-text {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .portfolio-container {
+                border-radius: 12px;
+            }
+
+            .portfolio-header {
+                padding: 40px 25px 30px;
+            }
+
+            .section {
+                padding: 40px 25px;
+            }
+
+            .name {
+                font-size: 2.2rem;
+            }
+
+            .profession {
+                font-size: 1.2rem;
+            }
+
+            .profile-image {
+                width: 120px;
+                height: 120px;
+                font-size: 2.2rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                padding-left: 60px;
+            }
+
+            .timeline-date {
+                width: 40px;
+                height: 40px;
+                font-size: 0.7rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .education-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio-header {
+                padding: 30px 20px;
+            }
+
+            .section {
+                padding: 30px 20px;
+            }
+
+            .name {
+                font-size: 1.8rem;
+            }
+
+            .contact-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .project-image {
+                height: 180px;
+            }
+        }
+
+        /* ===== ANIMAÇÕES ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+    </style>
+</head>
+<body>
+    <div class="portfolio-container">
+        <!-- HEADER -->
+        <header class="portfolio-header fade-in">
+            <div class="logo-container">
+                <img src="../../img/logo.png" alt="FolioLabs" class="logo">
+            </div>
+            <div class="personal-info">
+                <div class="profile-image">LC</div>
+                <h1 class="name">Luiz Cavini</h1>
+                <p class="profession">Desenvolvedor Full-Stack</p>
+                <p class="tagline">Criando soluções inovadoras através de código limpo e design intuitivo</p>
+            </div>
+        </header>
+
+        <!-- SOBRE MIM -->
+        <section class="section fade-in delay-1">
+            <h2 class="section-title">Sobre Mim</h2>
+            <div class="about-content">
+                <p>Desenvolvedor full-stack com mais de 5 anos de experiência em criar aplicações web escaláveis e de alto desempenho. Especializado em JavaScript, React, Node.js e arquitetura de sistemas cloud.</p>
+                <p>Minha paixão é transformar ideias complexas em soluções elegantes e funcionais. Acredito que a melhor tecnologia é aquela que resolve problemas reais de forma simples e eficiente.</p>
+            </div>
+        </section>
+
+        <!-- CONTATO -->
+        <section class="section fade-in delay-2">
+            <h2 class="section-title">Contato</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <div class="contact-info">
+                        <h3>E-mail</h3>
+                        <p>luiz.cavini@exemplo.com</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📱</div>
+                    <div class="contact-info">
+                        <h3>Telefone</h3>
+                        <p>(11) 99999-9999</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">💼</div>
+                    <div class="contact-info">
+                        <h3>LinkedIn</h3>
+                        <p>linkedin.com/in/luizcavini</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONHECIMENTOS E HABILIDADES -->
+        <section class="section fade-in delay-3">
+            <h2 class="section-title">Conhecimentos & Habilidades</h2>
+            <div class="skills-grid">
+                <div class="skills-category">
+                    <h3>Tecnologias & Ferramentas</h3>
+                    <div class="skills-list">
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">PostgreSQL</span>
+                        <span class="skill-tag">MongoDB</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">Figma</span>
+                    </div>
+                </div>
+                <div class="skills-category">
+                    <h3>Habilidades Interpessoais</h3>
+                    <div class="skills-list">
+                        <span class="skill-tag soft">Liderança</span>
+                        <span class="skill-tag soft">Comunicação</span>
+                        <span class="skill-tag soft">Trabalho em Equipe</span>
+                        <span class="skill-tag soft">Resolução de Problemas</span>
+                        <span class="skill-tag soft">Pensamento Crítico</span>
+                        <span class="skill-tag soft">Gestão de Tempo</span>
+                        <span class="skill-tag soft">Adaptabilidade</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERIÊNCIA PROFISSIONAL -->
+        <section class="section fade-in delay-4">
+            <h2 class="section-title">Experiência Profissional</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2022<br>Atual</div>
+                    <div class="timeline-content">
+                        <h3>Desenvolvedor Full-Stack Sênior</h3>
+                        <p class="company">Tech Solutions Inc.</p>
+                        <p>Liderança de equipe de desenvolvimento de 8 pessoas, arquitetura de sistemas escaláveis em AWS e implementação de microserviços. Otimização de performance resultando em 40% de melhoria no tempo de carregamento.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2020<br>2022</div>
+                    <div class="timeline-content">
+                        <h3>Desenvolvedor Front-end Pleno</h3>
+                        <p class="company">Digital Agency</p>
+                        <p>Desenvolvimento de interfaces modernas utilizando React e Vue.js, implementação de design systems e otimização de SEO. Colaboração com equipe de design para criar experiências de usuário excepcionais.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2018<br>2020</div>
+                    <div class="timeline-content">
+                        <h3>Desenvolvedor Full-Stack Júnior</h3>
+                        <p class="company">Startup XYZ</p>
+                        <p>Desenvolvimento de features para plataforma SaaS, manutenção de sistemas legados e implementação de testes automatizados. Participação ativa em decisões de arquitetura e tecnologias.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FORMAÇÃO ACADÊMICA -->
+        <section class="section fade-in delay-5">
+            <h2 class="section-title">Formação Acadêmica</h2>
+            <div class="education-grid">
+                <div class="education-item">
+                    <h3>Bacharelado em Ciência da Computação</h3>
+                    <p class="institution">Universidade Federal de Tecnologia</p>
+                    <p class="education-dates">2015 - 2019</p>
+                </div>
+                <div class="education-item">
+                    <h3>Pós-graduação em Engenharia de Software</h3>
+                    <p class="institution">Instituto de Tecnologia Avançada</p>
+                    <p class="education-dates">2020 - 2021</p>
+                </div>
+                <div class="education-item">
+                    <h3>Certificação AWS Solutions Architect</h3>
+                    <p class="institution">Amazon Web Services</p>
+                    <p class="education-dates">2022</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRABALHOS REALIZADOS -->
+        <section class="section fade-in">
+            <h2 class="section-title">Projetos Destacados</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">E-commerce</div>
+                    <div class="project-content">
+                        <h3>Plataforma de E-commerce</h3>
+                        <p>Sistema completo de e-commerce com carrinho de compras, gateway de pagamento integrado e painel administrativo. Desenvolvido com React, Node.js e PostgreSQL.</p>
+                        <a href="#" class="project-link">Ver Projeto</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">App Mobile</div>
+                    <div class="project-content">
+                        <h3>Aplicativo de Gestão</h3>
+                        <p>Aplicativo mobile para gestão de tarefas e projetos com sincronização em tempo real, notificações push e interface moderna desenvolvida com React Native.</p>
+                        <a href="#" class="project-link">Ver Projeto</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">Dashboard</div>
+                    <div class="project-content">
+                        <h3>Dashboard Analytics</h3>
+                        <p>Dashboard interativo para análise de dados empresariais com visualizações em tempo real, relatórios personalizados e integração com múltiplas fontes de dados.</p>
+                        <a href="#" class="project-link">Ver Projeto</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="portfolio-footer">
+            <img src="../../img/logo.png" alt="FolioLabs" class="footer-logo">
+            <p class="footer-text">Portfólio criado com FolioLabs</p>
+        </footer>
+    </div>
+
+    <script>
+        // Animação de scroll suave
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(40px)';
+                el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

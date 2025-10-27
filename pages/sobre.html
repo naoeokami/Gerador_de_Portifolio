@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="html_sobre">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre - FelicLabs</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header>
+        <a href="../index.html">
+            <img class="header_logo" src="../img/logo.png" alt="FelicLabs Logo">
+        </a>
+        
+        <nav class="header_nav">
+            <a href="home.html" class="nav_link">Inicio</a>
+            <a href="explorar.html" class="nav_link">Explorar</a>
+            <a href="sobre.html" class="nav_link active">Sobre</a>
+        </nav>
+        
+        <a href="../index.html" class="header_login-link">
+            <p class="header_user">Voltar ao Login</p>
+        </a>
+        
+        <button class="hamburger-btn" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- Menu lateral para mobile -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <nav class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h3>Menu</h3>
+            <button class="close-btn" id="closeBtn">&times;</button>
+        </div>
+        <div class="mobile-nav-links">
+            <a href="home.html" class="mobile-nav-link">Inicio</a>
+            <a href="explorar.html" class="mobile-nav-link">Explorar</a>
+            <a href="sobre.html" class="mobile-nav-link active">Sobre</a>
+            <a href="../index.html" class="mobile-nav-link login-link-mobile">Voltar ao Login</a>
+        </div>
+    </nav>
+
+    <main class="main_sobre">
+        <section class="sobre_hero">
+            <h1 class="sobre_titulo">Sobre o FolioLabs</h1>
+            <p class="sobre_subtitulo">Conectando talentos e oportunidades através de portfólios incríveis</p>
+        </section>
+
+        <section class="sobre_conteudo">
+            <div class="sobre_card">
+                <h2>Nossa Missão</h2>
+                <p>Democratizar a criação de portfólios profissionais, oferecendo uma plataforma intuitiva e acessível para que todos possam mostrar seu trabalho ao mundo.</p>
+            </div>
+
+            <div class="sobre_card">
+                <h2>O Que Fazemos</h2>
+                <p>Desenvolvemos soluções inovadoras para criação e gestão de portfólios online, com foco em experiência do usuário e design responsivo.</p>
+            </div>
+
+            <div class="sobre_card">
+                <h2>Nossa Equipe</h2>
+                <div class="equipe_membros">
+                    <div class="membro">
+                        <div class="membro_foto cavini"></div>
+                        <h3>Luiz Henrique Cavini Cavini</h3>
+                        <p>IT student/Social Media Analyst</p>
+                    </div>
+                    <div class="membro">
+                        <div class="membro_foto boldrin"></div>
+                        <h3>João Pedro Boldrin da Silva</h3>
+                        <p>IT student</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Desenvolvido por: Luiz Cavini - João Boldrin ©</p>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

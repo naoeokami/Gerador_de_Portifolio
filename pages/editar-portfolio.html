@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Portfólio - FelicLabs</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <header>
+        <a href="../index.html">
+            <img class="header_logo" src="../img/logo.png" alt="FelicLabs Logo">
+        </a>
+
+        <nav class="header_nav">
+            <a href="home.html" class="nav_link">Inicio</a>
+            <a href="explorar.html" class="nav_link">Explorar</a>
+            <a href="sobre.html" class="nav_link">Sobre</a>
+        </nav>
+
+        <a href="../index.html" class="header_login-link">
+            <p class="header_user">Voltar ao Login</p>
+        </a>
+
+        <button class="hamburger-btn" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <nav class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h3>Menu</h3>
+            <button class="close-btn" id="closeBtn">&times;</button>
+        </div>
+        <div class="mobile-nav-links">
+            <a href="home.html" class="mobile-nav-link">Inicio</a>
+            <a href="explorar.html" class="mobile-nav-link">Explorar</a>
+            <a href="sobre.html" class="mobile-nav-link">Sobre</a>
+            <a href="../index.html" class="mobile-nav-link login-link-mobile">Voltar ao Login</a>
+        </div>
+    </nav>
+
+    <main class="main_criar-portfolio">
+        <div class="criar-portfolio_container">
+            <h1 class="criar-portfolio_titulo">Editar Portfólio</h1>
+            <p class="criar-portfolio_subtitulo">Atualize as informações do seu portfólio</p>
+
+            <form class="portfolio-form">
+                <!-- Mesma estrutura do criar-portfolio.html -->
+                <!-- Informações Pessoais -->
+                <div class="form-section">
+                    <h2 class="section-title">Informações Pessoais</h2>
+                    <div class="form-group">
+                        <label for="nome">Nome Completo *</label>
+                        <input type="text" id="nome" name="nome" required class="form-input" value="Luiz Cavini">
+                    </div>
+                    <div class="form-group">
+                        <label for="profissao">Profissão *</label>
+                        <input type="text" id="profissao" name="profissao" required class="form-input"
+                            value="Desenvolvedor Full-Stack">
+                    </div>
+                    <div class="form-group">
+                        <label for="foto">Foto de Perfil</label>
+                        <input type="file" id="foto" name="foto" accept="image/*" class="form-input">
+                    </div>
+                </div>
+
+                <!-- Sobre Mim -->
+                <div class="form-section">
+                    <h2 class="section-title">Sobre Mim</h2>
+                    <div class="form-group">
+                        <label for="sobre">Descreva sobre você *</label>
+                        <textarea id="sobre" name="sobre" rows="5" required
+                            class="form-textarea">Desenvolvedor apaixonado por tecnologia com experiência em criar soluções inovadoras. Sempre em busca de novos desafios e aprendizado constante.</textarea>
+                    </div>
+                </div>
+
+                <!-- Contato -->
+                <div class="form-section">
+                    <h2 class="section-title">Contato</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">E-mail *</label>
+                            <input type="email" id="email" name="email" required class="form-input"
+                                value="luiz@exemplo.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="telefone">Telefone/WhatsApp</label>
+                            <input type="tel" id="telefone" name="telefone" class="form-input" value="(11) 99999-9999">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="linkedin">LinkedIn</label>
+                        <input type="url" id="linkedin" name="linkedin" class="form-input"
+                            value="https://linkedin.com/in/luizcavini">
+                    </div>
+                </div>
+
+                <!-- Conhecimentos -->
+                <div class="form-section">
+                    <h2 class="section-title">Conhecimentos</h2>
+                    <div class="form-group">
+                        <label>Adicione seus conhecimentos técnicos</label>
+                        <div class="tags-container">
+                            <div class="tags-input-container">
+                                <input type="text" id="conhecimento-input" class="tag-input"
+                                    placeholder="Ex: JavaScript, Photoshop, Gestão de Projetos...">
+                                <button type="button" class="add-tag-btn">+</button>
+                            </div>
+                            <div class="tags-list" id="conhecimentos-list">
+                                <div class="tag">
+                                    JavaScript
+                                    <span class="remove-tag">&times;</span>
+                                    <input type="hidden" name="conhecimento[]" value="JavaScript">
+                                </div>
+                                <div class="tag">
+                                    React
+                                    <span class="remove-tag">&times;</span>
+                                    <input type="hidden" name="conhecimento[]" value="React">
+                                </div>
+                                <div class="tag">
+                                    Node.js
+                                    <span class="remove-tag">&times;</span>
+                                    <input type="hidden" name="conhecimento[]" value="Node.js">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Habilidades -->
+                <div class="form-section">
+                    <h2 class="section-title">Habilidades</h2>
+                    <div class="form-group">
+                        <label>Adicione suas habilidades pessoais</label>
+                        <div class="tags-container">
+                            <div class="tags-input-container">
+                                <input type="text" id="habilidade-input" class="tag-input"
+                                    placeholder="Ex: Liderança, Comunicação, Criatividade...">
+                                <button type="button" class="add-tag-btn">+</button>
+                            </div>
+                            <div class="tags-list" id="habilidades-list">
+                                <div class="tag">
+                                    Trabalho em Equipe
+                                    <span class="remove-tag">&times;</span>
+                                    <input type="hidden" name="habilidade[]" value="Trabalho em Equipe">
+                                </div>
+                                <div class="tag">
+                                    Resolução de Problemas
+                                    <span class="remove-tag">&times;</span>
+                                    <input type="hidden" name="habilidade[]" value="Resolução de Problemas">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experiência de Trabalho -->
+                <div class="form-section">
+                    <h2 class="section-title">Experiência de Trabalho</h2>
+                    <div id="experiencias-container">
+                        <div class="experiencia-item">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Cargo *</label>
+                                    <input type="text" name="cargo[]" required class="form-input"
+                                        value="Desenvolvedor Full-Stack">
+                                </div>
+                                <div class="form-group">
+                                    <label>Empresa *</label>
+                                    <input type="text" name="empresa[]" required class="form-input"
+                                        value="Tech Solutions">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Data de Início</label>
+                                    <input type="month" name="inicio[]" class="form-input" value="2022-01">
+                                </div>
+                                <div class="form-group">
+                                    <label>Data de Término</label>
+                                    <input type="month" name="fim[]" class="form-input" value="2023-12">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Descrição</label>
+                                <textarea name="descricao_exp[]" rows="3"
+                                    class="form-textarea">Desenvolvimento de aplicações web utilizando React e Node.js. Implementação de APIs RESTful e integração com bancos de dados.</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-experiencia-btn">+ Adicionar Experiência</button>
+                </div>
+
+                <!-- Formação -->
+                <div class="form-section">
+                    <h2 class="section-title">Formação</h2>
+                    <div id="formacao-container">
+                        <div class="formacao-item">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Curso *</label>
+                                    <input type="text" name="curso[]" required class="form-input"
+                                        value="Ciência da Computação">
+                                </div>
+                                <div class="form-group">
+                                    <label>Instituição *</label>
+                                    <input type="text" name="instituicao[]" required class="form-input"
+                                        value="Universidade Exemplo">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Data de Início</label>
+                                    <input type="month" name="inicio_curso[]" class="form-input" value="2018-01">
+                                </div>
+                                <div class="form-group">
+                                    <label>Data de Conclusão</label>
+                                    <input type="month" name="fim_curso[]" class="form-input" value="2021-12">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-formacao-btn">+ Adicionar Formação</button>
+                </div>
+
+                <!-- Links para Trabalhos -->
+                <div class="form-section">
+                    <h2 class="section-title">Links para Trabalhos</h2>
+                    <div id="trabalhos-container">
+                        <div class="trabalho-item">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Título do Trabalho *</label>
+                                    <input type="text" name="titulo_trabalho[]" required class="form-input"
+                                        value="Sistema de Gestão">
+                                </div>
+                                <div class="form-group">
+                                    <label>URL *</label>
+                                    <input type="url" name="url_trabalho[]" required class="form-input"
+                                        value="https://github.com/luiz/projeto-exemplo">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Descrição</label>
+                                <textarea name="descricao_trabalho[]" rows="2"
+                                    class="form-textarea">Sistema completo de gestão empresarial desenvolvido com React e Node.js</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-trabalho-btn">+ Adicionar Trabalho</button>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Salvar Alterações</button>
+                    <button type="button" class="btn-secondary">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>Desenvolvido por: Luiz Cavini - João Boldrin ©</p>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+
+</html>

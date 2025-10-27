@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio - [Nome]</title>
+    <style>
+        /* ===== RESET E VARIÁVEIS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark-bg: #0a0a0a;
+            --dark-surface: #1a1a1a;
+            --dark-card: #2a2a2a;
+            --dark-border: #333333;
+            --accent-primary: #00d4ff;
+            --accent-secondary: #ff6b6b;
+            --accent-tertiary: #7c4dff;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-muted: #888888;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.6);
+            --border-radius: 20px;
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --glow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        body {
+            font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* ===== LAYOUT PRINCIPAL ===== */
+        .portfolio-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--dark-surface);
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 1px solid var(--dark-border);
+            position: relative;
+        }
+
+        .portfolio-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+        }
+
+        /* ===== HEADER ===== */
+        .portfolio-header {
+            background: linear-gradient(135deg, var(--dark-surface) 0%, #252525 100%);
+            padding: 80px 40px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portfolio-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+        }
+
+        .logo-container {
+            margin-bottom: 50px;
+        }
+
+        .logo {
+            max-width: 200px;
+            height: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .personal-info {
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            margin: 0 auto 40px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-tertiary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 3.5rem;
+            font-weight: bold;
+            position: relative;
+            box-shadow: var(--glow);
+            border: 4px solid var(--dark-surface);
+        }
+
+        .profile-image::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-tertiary));
+            z-index: -1;
+            opacity: 0.7;
+            filter: blur(10px);
+        }
+
+        .name {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .profession {
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+            margin-bottom: 30px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* ===== SEÇÕES ===== */
+        .section {
+            padding: 80px 40px;
+            border-bottom: 1px solid var(--dark-border);
+            position: relative;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 40px;
+            right: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--dark-border), transparent);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            margin-bottom: 50px;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 2px;
+            box-shadow: var(--glow);
+        }
+
+        /* ===== SOBRE MIM ===== */
+        .about-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            max-width: 800px;
+        }
+
+        .about-content p {
+            margin-bottom: 25px;
+        }
+
+        .highlight {
+            color: var(--accent-primary);
+            font-weight: 500;
+        }
+
+        /* ===== CONTATO ===== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            padding: 30px;
+            background: var(--dark-card);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border: 1px solid var(--dark-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transition: var(--transition);
+        }
+
+        .contact-item:hover::before {
+            left: 100%;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-primary);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-tertiary) 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: var(--glow);
+        }
+
+        .contact-info h3 {
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .contact-info p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* ===== CONHECIMENTOS E HABILIDADES ===== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 50px;
+        }
+
+        .skills-category {
+            background: var(--dark-card);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--dark-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skills-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .skills-category h3 {
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, var(--dark-surface) 0%, var(--dark-card) 100%);
+            color: var(--text-primary);
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: 1px solid var(--dark-border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+            transition: var(--transition);
+        }
+
+        .skill-tag:hover::before {
+            left: 100%;
+        }
+
+        .skill-tag:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow);
+            border-color: var(--accent-primary);
+        }
+
+        .skill-tag.soft {
+            background: linear-gradient(135deg, var(--accent-secondary) 0%, #ff8e8e 100%);
+            border: none;
+        }
+
+        /* ===== EXPERIÊNCIA ===== */
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 40px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
+            border-radius: 2px;
+            box-shadow: var(--glow);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+            padding-left: 100px;
+        }
+
+        .timeline-date {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 80px;
+            height: 80px;
+            background: var(--dark-card);
+            color: var(--text-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.2;
+            font-size: 0.9rem;
+            border: 3px solid;
+            border-image: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)) 1;
+            box-shadow: var(--shadow);
+            z-index: 2;
+        }
+
+        .timeline-content {
+            background: var(--dark-card);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--dark-border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.05), transparent);
+            transition: var(--transition);
+        }
+
+        .timeline-content:hover::before {
+            left: 100%;
+        }
+
+        .timeline-content:hover {
+            transform: translateX(15px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-primary);
+        }
+
+        .timeline-content h3 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .timeline-content .company {
+            color: var(--accent-primary);
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* ===== FORMAÇÃO ===== */
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+        }
+
+        .education-item {
+            background: var(--dark-card);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--dark-border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .education-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--accent-tertiary));
+        }
+
+        .education-item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-primary);
+        }
+
+        .education-item h3 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .education-item .institution {
+            color: var(--accent-primary);
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .education-dates {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* ===== TRABALHOS ===== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 35px;
+        }
+
+        .project-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.05), transparent);
+            transition: var(--transition);
+        }
+
+        .project-card:hover::before {
+            left: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-primary);
+        }
+
+        .project-image {
+            height: 240px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-tertiary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 2rem;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+        }
+
+        .project-content {
+            padding: 35px;
+        }
+
+        .project-content h3 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .project-content p {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-tertiary) 100%);
+            color: var(--text-primary);
+            padding: 15px 28px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--glow);
+        }
+
+        .project-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 212, 255, 0.4);
+        }
+
+        /* ===== FOOTER ===== */
+        .portfolio-footer {
+            background: linear-gradient(135deg, var(--dark-surface) 0%, #252525 100%);
+            color: var(--text-primary);
+            text-align: center;
+            padding: 50px;
+            border-top: 1px solid var(--dark-border);
+            position: relative;
+        }
+
+        .portfolio-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+        }
+
+        .footer-logo {
+            max-width: 140px;
+            margin: 0 auto 25px;
+            opacity: 0.8;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .portfolio-container {
+                border-radius: 15px;
+            }
+
+            .portfolio-header {
+                padding: 60px 25px 40px;
+            }
+
+            .section {
+                padding: 60px 25px;
+            }
+
+            .name {
+                font-size: 2.5rem;
+            }
+
+            .profession {
+                font-size: 1.2rem;
+            }
+
+            .profile-image {
+                width: 140px;
+                height: 140px;
+                font-size: 2.8rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .timeline::before {
+                left: 25px;
+            }
+
+            .timeline-item {
+                padding-left: 70px;
+            }
+
+            .timeline-date {
+                width: 50px;
+                height: 50px;
+                font-size: 0.8rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .education-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio-header {
+                padding: 40px 20px;
+            }
+
+            .section {
+                padding: 40px 20px;
+            }
+
+            .name {
+                font-size: 2rem;
+            }
+
+            .contact-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .project-image {
+                height: 200px;
+            }
+
+            .project-content {
+                padding: 25px;
+            }
+        }
+
+        /* ===== ANIMAÇÕES ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+        .delay-5 { animation-delay: 1s; }
+    </style>
+</head>
+<body>
+    <div class="portfolio-container">
+        <!-- HEADER -->
+        <header class="portfolio-header fade-in">
+            <div class="logo-container">
+                <img src="../../img/logobranca.png" alt="FolioLabs" class="logo">
+            </div>
+            <div class="personal-info">
+                <div class="profile-image">LC</div>
+                <h1 class="name">Luiz Cavini</h1>
+                <p class="profession">Desenvolvedor Full-Stack</p>
+                <p class="tagline">Transformando ideias em experiências digitais extraordinárias através de código inovador e design impactante</p>
+            </div>
+        </header>
+
+        <!-- SOBRE MIM -->
+        <section class="section fade-in delay-1">
+            <h2 class="section-title">Sobre Mim</h2>
+            <div class="about-content">
+                <p>Desenvolvedor full-stack com expertise em criar <span class="highlight">soluções digitais de alto impacto</span>. Especializado em JavaScript, React, Node.js e arquiteturas cloud-native, com mais de 5 anos moldando o futuro digital.</p>
+                <p>Minha missão é <span class="highlight">descomplicar o complexo</span>, transformando desafios técnicos em experiências intuitivas e memoráveis. Acredito que a verdadeira inovação acontece na interseção entre tecnologia elegante e propósito claro.</p>
+            </div>
+        </section>
+
+        <!-- CONTATO -->
+        <section class="section fade-in delay-2">
+            <h2 class="section-title">Contato</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-icon">⚡</div>
+                    <div class="contact-info">
+                        <h3>E-mail</h3>
+                        <p>luiz.cavini@exemplo.com</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">🚀</div>
+                    <div class="contact-info">
+                        <h3>Telefone</h3>
+                        <p>(11) 99999-9999</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">🌐</div>
+                    <div class="contact-info">
+                        <h3>LinkedIn</h3>
+                        <p>linkedin.com/in/luizcavini</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONHECIMENTOS E HABILIDADES -->
+        <section class="section fade-in delay-3">
+            <h2 class="section-title">Conhecimentos & Habilidades</h2>
+            <div class="skills-grid">
+                <div class="skills-category">
+                    <h3>Tecnologias & Ferramentas</h3>
+                    <div class="skills-list">
+                        <span class="skill-tag">JavaScript ES6+</span>
+                        <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">React & Next.js</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">PostgreSQL</span>
+                        <span class="skill-tag">MongoDB</span>
+                        <span class="skill-tag">Docker & Kubernetes</span>
+                        <span class="skill-tag">AWS Cloud</span>
+                        <span class="skill-tag">GraphQL</span>
+                        <span class="skill-tag">Figma</span>
+                    </div>
+                </div>
+                <div class="skills-category">
+                    <h3>Competências</h3>
+                    <div class="skills-list">
+                        <span class="skill-tag soft">Liderança Técnica</span>
+                        <span class="skill-tag soft">Arquitetura de Sistemas</span>
+                        <span class="skill-tag soft">Gestão Ágil</span>
+                        <span class="skill-tag soft">Mentoria</span>
+                        <span class="skill-tag soft">Resolução Criativa</span>
+                        <span class="skill-tag soft">Comunicação Estratégica</span>
+                        <span class="skill-tag soft">Pensamento Sistêmico</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERIÊNCIA PROFISSIONAL -->
+        <section class="section fade-in delay-4">
+            <h2 class="section-title">Jornada Profissional</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2022<br>Atual</div>
+                    <div class="timeline-content">
+                        <h3>Tech Lead & Arquiteto</h3>
+                        <p class="company">Nexus Tech Solutions</p>
+                        <p>Liderança de equipe multidisciplinar de 12 desenvolvedores. Arquitetura de plataforma microserviços em AWS que atende 500k+ usuários. Implementação de práticas de DevOps que reduziram deploys em 70%.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2020<br>2022</div>
+                    <div class="timeline-content">
+                        <h3>Senior Full-Stack Developer</h3>
+                        <p class="company">Digital Innovation Labs</p>
+                        <p>Desenvolvimento de aplicações enterprise em React e Node.js. Otimização de performance que resultou em 60% de melhoria no Core Web Vitals. Mentoria de desenvolvedores juniores e plenos.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2018<br>2020</div>
+                    <div class="timeline-content">
+                        <h3>Full-Stack Developer</h3>
+                        <p class="company">Startup Catalyst</p>
+                        <p>Prototipação e desenvolvimento de MVP para plataforma SaaS. Implementação de features críticas e integração com APIs de terceiros. Participação ativa nas decisões de produto e tecnologia.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FORMAÇÃO ACADÊMICA -->
+        <section class="section fade-in delay-5">
+            <h2 class="section-title">Formação & Certificações</h2>
+            <div class="education-grid">
+                <div class="education-item">
+                    <h3>Bacharelado em Engenharia de Software</h3>
+                    <p class="institution">Instituto de Tecnologia Avançada</p>
+                    <p class="education-dates">2015 - 2019</p>
+                </div>
+                <div class="education-item">
+                    <h3>Mestrado em Ciência da Computação</h3>
+                    <p class="institution">Universidade Federal de Tecnologia</p>
+                    <p class="education-dates">2020 - 2022</p>
+                </div>
+                <div class="education-item">
+                    <h3>AWS Solutions Architect Professional</h3>
+                    <p class="institution">Amazon Web Services</p>
+                    <p class="education-dates">2023</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRABALHOS REALIZADOS -->
+        <section class="section fade-in">
+            <h2 class="section-title">Projetos em Destaque</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">NEXUS</div>
+                    <div class="project-content">
+                        <h3>Plataforma de Analytics</h3>
+                        <p>Sistema de business intelligence em tempo real processando 1M+ eventos diários. Arquitetura serverless com AWS Lambda e real-time dashboards.</p>
+                        <a href="#" class="project-link">Explorar Projeto</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">QUANTUM</div>
+                    <div class="project-content">
+                        <h3>Framework de Machine Learning</h3>
+                        <p>Framework open-source para deploy de modelos de ML. Auto-scaling, monitoramento em tempo real e interface de gestão intuitiva.</p>
+                        <a href="#" class="project-link">Explorar Projeto</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">SYNAPSE</div>
+                    <div class="project-content">
+                        <h3>Sistema de Collaboration</h3>
+                        <p>Plataforma de colaboração empresarial com real-time editing, video conferencing e gestão de projetos integrada.</p>
+                        <a href="#" class="project-link">Explorar Projeto</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="portfolio-footer">
+            <img src="../../img/logobranca.png" alt="FolioLabs" class="footer-logo">
+            <p class="footer-text">Portfólio criado com FolioLabs</p>
+        </footer>
+    </div>
+
+    <script>
+        // Animação de scroll suave
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0) scale(1)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(50px) scale(0.95)';
+                el.style.transition = 'opacity 1s ease, transform 1s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

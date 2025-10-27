@@ -1,37 +1,81 @@
 <!DOCTYPE html>
-<html lang="en" class="html_home">
+<html lang="pt-BR" class="html_home">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - FolioLabs</title>
+    <title>Home - FelicLabs</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
     <header>
-
         <a href="../index.html">
-            <img class="header_logo" src="../img/logo.png" alt="">
+            <img class="header_logo" src="../img/logo.png" alt="FelicLabs Logo">
         </a>
-        <img class="header_user"
-            src="https://marketplace.canva.com/Dz63E/MAF4KJDz63E/1/tl/canva-user-icon-MAF4KJDz63E.png" alt="">
+
+        <nav class="header_nav">
+            <a href="home.html" class="nav_link active">Inicio</a>
+            <a href="explorar.html" class="nav_link">Explorar</a>
+            <a href="sobre.html" class="nav_link">Sobre</a>
+        </nav>
+
+        <!-- Link Voltar ao Login no lugar da imagem -->
+        <a href="../index.html" class="header_login-link">
+            <p class="header_user">Voltar ao Login</p>
+        </a>
+
+        <!-- Botão do menu hamburguer -->
+        <button class="hamburger-btn" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </header>
 
-    <main>
+    <!-- Menu lateral para mobile -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <nav class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h3>Menu</h3>
+            <button class="close-btn" id="closeBtn">&times;</button>
+        </div>
+        <div class="mobile-nav-links">
+            <a href="home.html" class="mobile-nav-link active">Inicio</a>
+            <a href="explorar.html" class="mobile-nav-link">Explorar</a>
+            <a href="sobre.html" class="mobile-nav-link">Sobre</a>
+            <!-- Link Voltar ao Login no menu mobile -->
+            <a href="../index.html" class="mobile-nav-link login-link-mobile">Voltar ao Login</a>
+        </div>
+    </nav>
+
+
+    <main class="main_home">
         <div class="welcome_user">
             <p>Bem vindo,</p>
             <p id="nome_user">Luiz Cavini</p>
         </div>
 
-        <aside>
+        <div class="botoes_acao">
+            <p class="descricao">Bem vindo ao FolioLabs, clique no botão abaixo para criar seu portifolio!</p>
+            <div class="botoes_container">
 
-        </aside>
+                <a href="criar-portfolio.html" class="botao_acao_link">
+                    <button class="botao_acao" id="criar_portfolio">Criar Portifolio</button>
+                </a>
+
+                <a href="editar-portfolio.html" class="botao_acao_link">
+                    <button class="botao_acao" id="editar_portfolio">Editar Portifolio</button>
+                </a>
+            </div>
+        </div>
     </main>
 
     <footer>
         <p>Desenvolvido por: Luiz Cavini - João Boldrin ©</p>
     </footer>
+
+    <script src="../js/script.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar - FelicLabs</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <header>
+        <a href="../index.html">
+            <img class="header_logo" src="../img/logo.png" alt="FelicLabs Logo">
+        </a>
+
+        <nav class="header_nav">
+            <a href="home.html" class="nav_link">Inicio</a>
+            <a href="explorar.html" class="nav_link active">Explorar</a>
+            <a href="sobre.html" class="nav_link">Sobre</a>
+        </nav>
+
+        <a href="../index.html" class="header_login-link">
+            <p class="header_user">Voltar ao Login</p>
+        </a>
+
+        <button class="hamburger-btn" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <nav class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <h3>Menu</h3>
+            <button class="close-btn" id="closeBtn">&times;</button>
+        </div>
+        <div class="mobile-nav-links">
+            <a href="home.html" class="mobile-nav-link">Inicio</a>
+            <a href="explorar.html" class="mobile-nav-link active">Explorar</a>
+            <a href="sobre.html" class="mobile-nav-link">Sobre</a>
+            <a href="../index.html" class="mobile-nav-link login-link-mobile">Voltar ao Login</a>
+        </div>
+    </nav>
+
+    <main class="main_explorar">
+        <div class="explorar_container">
+            <h1 class="explorar_titulo">Explorar Portfólios</h1>
+            <p class="explorar_subtitulo">Descubra talentos incríveis na nossa comunidade</p>
+
+            <!-- Filtros -->
+            <div class="filtros-container">
+                <div class="filtro-grupo">
+                    <label for="categoria">Categoria</label>
+                    <select id="categoria" class="filtro-select">
+                        <option value="">Todas as categorias</option>
+                        <option value="design">Design</option>
+                        <option value="dev">Desenvolvimento</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="fotografia">Fotografia</option>
+                    </select>
+                </div>
+                <div class="filtro-grupo">
+                    <label for="habilidade">Habilidade</label>
+                    <input type="text" id="habilidade" class="filtro-input" placeholder="Ex: React, Photoshop...">
+                </div>
+                <div class="filtro-grupo">
+                    <label for="ordenar">Ordenar por</label>
+                    <select id="ordenar" class="filtro-select">
+                        <option value="recentes">Mais recentes</option>
+                        <option value="antigos">Mais antigos</option>
+                        <option value="nome">Nome A-Z</option>
+                    </select>
+                </div>
+                <button class="btn-filtrar">Filtrar</button>
+            </div>
+
+            <!-- Grid de Portfólios -->
+            <div class="portfolio-grid">
+                <!-- Card 1 -->
+                <div class="portfolio-card">
+                    <div class="portfolio-header">
+                        <div class="portfolio-avatar"></div>
+                        <div class="portfolio-info">
+                            <h3>Ana Silva</h3>
+                            <p>UI/UX Designer</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-tags">
+                        <span class="tag">Figma</span>
+                        <span class="tag">Adobe XD</span>
+                        <span class="tag">Prototipagem</span>
+                    </div>
+                    <p class="portfolio-desc">Designer especializada em criar experiências digitais intuitivas e
+                        visualmente atraentes.</p>
+                    <button class="btn-visualizar">Visualizar Portfólio</button>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="portfolio-card">
+                    <div class="portfolio-header">
+                        <div class="portfolio-avatar"></div>
+                        <div class="portfolio-info">
+                            <h3>Carlos Santos</h3>
+                            <p>Desenvolvedor Full-Stack</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-tags">
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">React</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Python</span>
+                    </div>
+                    <p class="portfolio-desc">Desenvolvedor com 5+ anos de experiência em aplicações web escaláveis.</p>
+                    <button class="btn-visualizar">Visualizar Portfólio</button>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="portfolio-card">
+                    <div class="portfolio-header">
+                        <div class="portfolio-avatar"></div>
+                        <div class="portfolio-info">
+                            <h3>Marina Costa</h3>
+                            <p>Fotógrafa Profissional</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-tags">
+                        <span class="tag">Retratos</span>
+                        <span class="tag">Photoshop</span>
+                        <span class="tag">Lightroom</span>
+                    </div>
+                    <p class="portfolio-desc">Especializada em fotografia de retratos e eventos corporativos.</p>
+                    <button class="btn-visualizar">Visualizar Portfólio</button>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="portfolio-card">
+                    <div class="portfolio-header">
+                        <div class="portfolio-avatar"></div>
+                        <div class="portfolio-info">
+                            <h3>Pedro Oliveira</h3>
+                            <p>Marketing Digital</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-tags">
+                        <span class="tag">SEO</span>
+                        <span class="tag">Google Ads</span>
+                        <span class="tag">Mídias Sociais</span>
+                    </div>
+                    <p class="portfolio-desc">Estrategista de marketing com foco em growth e conversão.</p>
+                    <button class="btn-visualizar">Visualizar Portfólio</button>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="portfolio-card">
+                    <div class="portfolio-header">
+                        <div class="portfolio-avatar"></div>
+                        <div class="portfolio-info">
+                            <h3>Julia Rodrigues</h3>
+                            <p>Product Manager</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-tags">
+                        <span class="tag">Scrum</span>
+                        <span class="tag">Product Strategy</span>
+                        <span class="tag">UX Research</span>
+                    </div>
+                    <p class="portfolio-desc">Product Manager com experiência em startups e empresas scale-up.</p>
+                    <button class="btn-visualizar">Visualizar Portfólio</button>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="portfolio-card">
+                    <div class="portfolio-header">
+                        <div class="portfolio-avatar"></div>
+                        <div class="portfolio-info">
+                            <h3>Rafael Lima</h3>
+                            <p>Data Scientist</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Machine Learning</span>
+                        <span class="tag">SQL</span>
+                        <span class="tag">Tableau</span>
+                    </div>
+                    <p class="portfolio-desc">Cientista de dados especializado em modelos preditivos e análise de dados.
+                    </p>
+                    <button class="btn-visualizar">Visualizar Portfólio</button>
+                </div>
+            </div>
+
+            <!-- Paginação -->
+            <div class="paginacao">
+                <button class="pagina-btn disabled">Anterior</button>
+                <button class="pagina-btn active">1</button>
+                <button class="pagina-btn">2</button>
+                <button class="pagina-btn">3</button>
+                <button class="pagina-btn">Próxima</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Desenvolvido por: Luiz Cavini - João Boldrin ©</p>
+    </footer>
+    
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
