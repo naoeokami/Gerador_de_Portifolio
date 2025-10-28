@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Portfólio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .error {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-size: 1.2rem;
+            color: #e74c3c;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #portfolio-container {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="portfolio-container">
+        <div class="loading">Carregando portfólio...</div>
+    </div>
+
+    <!-- SDK do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.js"></script>
+    
+    <!-- Configuração do Supabase -->
+    <script src="../js/supabase_config.js"></script>
+    
+    <!-- Módulos -->
+    <script src="../js/auth.js"></script>
+    <script src="../js/portfolio.js"></script>
+    
+    <!-- Script de visualização -->
+    <script>
+        /**
+         * Função para carregar e exibir o portfólio
+         */
+        async function loadPortfolioViewer() {
+            try {
+                // Obter o ID do portfólio da URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const portfolioId = urlParams.get('id');
+
+                if (!portfolioId) {
+                    throw new Error('ID do portfólio não fornecido');
+                }
+
+                // Buscar os dados do portfólio no Supabase
+                const portfolio = await window.getPortfolioById(portfolioId);
+
+                if (!portfolio) {
+                    throw new Error('Portfólio não encontrado');
+                }
+
+                // Extrair os dados
+                const data = portfolio.data;
+                const templateName = data.template || 'template1';
+
+                // Carregar o template
+                const templatePath = `./template/${templateName}.html`;
+                const templateResponse = await fetch(templatePath);
+
+                if (!templateResponse.ok) {
+                    throw new Error(`Erro ao carregar o template: ${templateResponse.status}`);
+                }
+
+                const templateHTML = await templateResponse.text();
+
+                // Criar um elemento temporário para parsear o HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = templateHTML;
+
+                // Preencher os dados no template
+                fillTemplateData(tempDiv, data);
+
+                // Substituir o conteúdo do container
+                const container = document.getElementById('portfolio-container');
+                container.innerHTML = tempDiv.innerHTML;
+
+                // Atualizar o título da página
+                document.title = `Portfólio - ${data.nome}`;
+
+            } catch (error) {
+                console.error('Erro ao carregar portfólio:', error);
+                const container = document.getElementById('portfolio-container');
+                container.innerHTML = `
+                    <div class="error">
+                        <div>
+                            <h1>Erro ao carregar portfólio</h1>
+                            <p>${error.message}</p>
+                            <p><a href="explorar.html" style="color: #3498db; text-decoration: none;">← Voltar para Explorar</a></p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        /**
+         * Função para preencher os dados no template
+         */
+        function fillTemplateData(templateElement, data) {
+            // Preencher nome
+            const nameElements = templateElement.querySelectorAll('[data-field="nome"]');
+            nameElements.forEach(el => {
+                el.textContent = data.nome || 'Nome não informado';
+            });
+
+            // Preencher profissão
+            const professionElements = templateElement.querySelectorAll('[data-field="profissao"]');
+            professionElements.forEach(el => {
+                el.textContent = data.profissao || 'Profissão não informada';
+            });
+
+            // Preencher sobre
+            const aboutElements = templateElement.querySelectorAll('[data-field="sobre"]');
+            aboutElements.forEach(el => {
+                el.textContent = data.sobre || 'Descrição não fornecida';
+            });
+
+            // Preencher email
+            const emailElements = templateElement.querySelectorAll('[data-field="email"]');
+            emailElements.forEach(el => {
+                el.textContent = data.email || 'Email não fornecido';
+                if (el.tagName === 'A') {
+                    el.href = `mailto:${data.email}`;
+                }
+            });
+
+            // Preencher telefone
+            const phoneElements = templateElement.querySelectorAll('[data-field="telefone"]');
+            phoneElements.forEach(el => {
+                el.textContent = data.telefone || 'Telefone não fornecido';
+                if (el.tagName === 'A') {
+                    el.href = `tel:${data.telefone}`;
+                }
+            });
+
+            // Preencher LinkedIn
+            const linkedinElements = templateElement.querySelectorAll('[data-field="linkedin"]');
+            linkedinElements.forEach(el => {
+                el.textContent = data.linkedin || 'LinkedIn não fornecido';
+                if (el.tagName === 'A') {
+                    el.href = data.linkedin || '#';
+                    el.target = '_blank';
+                }
+            });
+
+            // Preencher conhecimentos
+            const conhecimentosContainer = templateElement.querySelector('[data-field="conhecimentos"]');
+            if (conhecimentosContainer && data.conhecimentos && data.conhecimentos.length > 0) {
+                conhecimentosContainer.innerHTML = data.conhecimentos
+                    .map(k => `<span class="skill-tag">${k}</span>`)
+                    .join('');
+            }
+
+            // Preencher habilidades
+            const habilidadesContainer = templateElement.querySelector('[data-field="habilidades"]');
+            if (habilidadesContainer && data.habilidades && data.habilidades.length > 0) {
+                habilidadesContainer.innerHTML = data.habilidades
+                    .map(h => `<span class="skill-tag soft">${h}</span>`)
+                    .join('');
+            }
+
+            // Preencher experiências
+            const experienciasContainer = templateElement.querySelector('[data-field="experiencias"]');
+            if (experienciasContainer && data.experiencias && data.experiencias.length > 0) {
+                experienciasContainer.innerHTML = data.experiencias
+                    .map(exp => `
+                        <div class="timeline-item">
+                            <div class="timeline-date">${exp.inicio ? exp.inicio.substring(0, 7) : 'N/A'}</div>
+                            <div class="timeline-content">
+                                <h3>${exp.cargo || 'Cargo não informado'}</h3>
+                                <div class="company">${exp.empresa || 'Empresa não informada'}</div>
+                                <p>${exp.descricao || 'Descrição não fornecida'}</p>
+                            </div>
+                        </div>
+                    `)
+                    .join('');
+            }
+
+            // Preencher formações
+            const formacoesContainer = templateElement.querySelector('[data-field="formacoes"]');
+            if (formacoesContainer && data.formacoes && data.formacoes.length > 0) {
+                formacoesContainer.innerHTML = data.formacoes
+                    .map(form => `
+                        <div class="education-item">
+                            <h3>${form.curso || 'Curso não informado'}</h3>
+                            <p class="institution">${form.instituicao || 'Instituição não informada'}</p>
+                            <p class="period">${form.inicio ? form.inicio.substring(0, 7) : 'N/A'} - ${form.fim ? form.fim.substring(0, 7) : 'Atual'}</p>
+                        </div>
+                    `)
+                    .join('');
+            }
+
+            // Preencher trabalhos
+            const trabalhosContainer = templateElement.querySelector('[data-field="trabalhos"]');
+            if (trabalhosContainer && data.trabalhos && data.trabalhos.length > 0) {
+                trabalhosContainer.innerHTML = data.trabalhos
+                    .map(trab => `
+                        <div class="project-card">
+                            <h3>${trab.titulo || 'Título não informado'}</h3>
+                            <p>${trab.descricao || 'Descrição não fornecida'}</p>
+                            <a href="${trab.url || '#'}" target="_blank" class="project-link">Ver Projeto →</a>
+                        </div>
+                    `)
+                    .join('');
+            }
+        }
+
+        // Carregar o portfólio quando a página carregar
+        document.addEventListener('DOMContentLoaded', loadPortfolioViewer);
+    </script>
+</body>
+</html>
+

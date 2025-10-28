@@ -17,13 +17,24 @@
             <form action="">
                 <input type="email" name="email" class="input_dados" id="email" placeholder="Digite seu email" required>
                 <input type="password" name="senha" class="input_dados" id="senha" placeholder="Digite sua senha" required>
-                <button type="submit" onclick="acessar()" class="botao_login" id="acessar">Acessar</button>
+                <button type="submit" class="botao_login" id="acessar">Acessar</button>
             </form>
             <a class="cadastro" href="pages/cadastro.html">Não tem Cadastro? Faça agora mesmo</a>
             <a class="cadastro" href="pages/home.html">pagina home</a>
         </div>
     </main>
 
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/module.js"></script>
+    
+    <!-- Configuração do Supabase -->
+    <script src="js/supabase_config.js"></script>
+    
+    <!-- Módulos de Autenticação e Portfólio -->
+    <script src="js/auth.js"></script>
+    <script src="js/portfolio.js"></script>
+    
+    <!-- Script principal -->
     <script src="js/script.js"></script>
 </body>
 
