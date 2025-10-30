@@ -50,8 +50,31 @@
             <h1 class="criar-portfolio_titulo">Editar Portfólio</h1>
             <p class="criar-portfolio_subtitulo">Atualize as informações do seu portfólio</p>
 
-            <form class="portfolio-form">
-                <!-- Mesma estrutura do criar-portfolio.html -->
+            <form class="portfolio-form" id="portfolio-form">
+                <!-- Seção: Escolher Template -->
+                <div class="form-section">
+                    <h2 class="section-title">Escolher Template</h2>
+                    <p style="margin-bottom: 20px; color: #666;">Selecione o template que deseja usar para seu
+                        portfólio:</p>
+                    <div class="template-selector"
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                        <label class="template-option"
+                            style="cursor: pointer; border: 2px solid #ddd; padding: 20px; border-radius: 8px; text-align: center; transition: all 0.3s;">
+                            <input type="radio" name="template" value="template1" required style="margin-right: 10px;">
+                            <span style="font-weight: 600; display: block; margin-top: 10px;">Template Light</span>
+                            <span style="font-size: 0.9rem; color: #666; display: block; margin-top: 5px;">Design claro
+                                e moderno</span>
+                        </label>
+                        <label class="template-option"
+                            style="cursor: pointer; border: 2px solid #ddd; padding: 20px; border-radius: 8px; text-align: center; transition: all 0.3s;">
+                            <input type="radio" name="template" value="template2" style="margin-right: 10px;">
+                            <span style="font-weight: 600; display: block; margin-top: 10px;">Template Dark</span>
+                            <span style="font-size: 0.9rem; color: #666; display: block; margin-top: 5px;">Design escuro
+                                e sofisticado</span>
+                        </label>
+                    </div>
+                </div>
+
                 <!-- Informações Pessoais -->
                 <div class="form-section">
                     <h2 class="section-title">Informações Pessoais</h2>
@@ -65,8 +88,11 @@
                             value="Desenvolvedor Full-Stack">
                     </div>
                     <div class="form-group">
-                        <label for="foto">Foto de Perfil</label>
-                        <input type="file" id="foto" name="foto" accept="image/*" class="form-input">
+                        <label for="profile-image-upload">Foto de Perfil</label>
+                        <p style="font-size: 0.9rem; color: #666; margin-top: -10px; margin-bottom: 10px;">Envie uma nova imagem para atualizar sua foto de perfil.</p>
+                        <div id="current-profile-image" style="margin-bottom: 10px;"></div>
+                        <input type="file" id="profile-image-upload" name="profile-image-upload" accept="image/*" class="form-input">
+                        <input type="hidden" id="profile-image-url" name="profile-image-url">
                     </div>
                 </div>
 
@@ -268,7 +294,19 @@
         <p>Desenvolvido por: Luiz Cavini - João Boldrin ©</p>
     </footer>
 
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.js"></script>
+    
+    <!-- Configuração do Supabase -->
+    <script src="../js/supabase_config.js"></script>
+    
+    <!-- Módulos de Autenticação e Portfólio -->
+    <script src="../js/auth.js"></script>
+    <script src="../js/portfolio.js"></script>
+    
+    <!-- Script principal -->
     <script src="../js/script.js"></script>
+    <script src="../js/editar-portfolio.js"></script>
 </body>
 
 </html>

@@ -53,7 +53,7 @@
     <main class="main_home">
         <div class="welcome_user">
             <p>Bem vindo,</p>
-            <p id="nome_user">Luiz Cavini</p>
+            <p id="nome_user"></p>
         </div>
 
         <div class="botoes_acao">
@@ -75,7 +75,19 @@
         <p>Desenvolvido por: Luiz Cavini - João Boldrin ©</p>
     </footer>
 
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.js"></script>
+    
+    <!-- Configuração do Supabase -->
+    <script src="../js/supabase_config.js"></script>
+    
+    <!-- Módulos de Autenticação e Portfólio -->
+    <script src="../js/auth.js"></script>
+    <script src="../js/portfolio.js"></script>
+    
+    <!-- Script principal -->
     <script src="../js/script.js"></script>
+    <script src="../js/home.js"></script>
 </body>
 
 </html>

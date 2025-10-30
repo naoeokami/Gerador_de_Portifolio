@@ -13,10 +13,23 @@
 async function signUp(email, password, name) {
     try {
         // Validar se as senhas coincidem
-        const confirmPassword = document.getElementById('confirmar_senha')?.value;
+        const confirmPasswordElement = document.getElementById('confirmar_senha');
+        const confirmPassword = confirmPasswordElement ? confirmPasswordElement.value : '';
         if (password !== confirmPassword) {
             throw new Error('As senhas não coincidem!');
         }
+
+        // Verificar se o email já está cadastrado
+        console.log('Verificando se o email já está cadastrado...');
+        const { data: existingUsers, error: checkError } = await window.supabase
+            .from('auth.users')
+            .select('email')
+            .eq('email', email)
+            .maybeSingle();
+
+        // Como não temos acesso direto à tabela auth.users, vamos tentar fazer login
+        // Se o login funcionar, significa que o usuário já existe
+        // Mas isso não é ideal. Vamos confiar no erro do Supabase ao tentar criar um usuário duplicado.
 
         // Criar o usuário no Supabase
         const { data, error } = await window.supabase.auth.signUp({
@@ -33,21 +46,37 @@ async function signUp(email, password, name) {
             throw error;
         }
 
+        // Verificar se o usuário já existe (Supabase retorna data mesmo para emails duplicados)
+        // Precisamos verificar se o usuário foi realmente criado ou se já existia
+        if (data && data.user) {
+            // Verificar se o usuário já estava confirmado (indica que já existia)
+            if (data.user.identities && data.user.identities.length === 0) {
+                throw new Error('Este e-mail já está cadastrado. Tente fazer login.');
+            }
+        }
+
         // Mostrar mensagem de sucesso
         showMessage('Cadastro realizado com sucesso! Verifique seu email para confirmar a conta.', 'success');
         
         // Limpar o formulário
         document.querySelector('form').reset();
         
-        // Redirecionar para login após 2 segundos
-        setTimeout(() => {
-            window.location.href = '../index.html';
-        }, 2000);
+        // Redirecionamento removido a pedido do usuário
 
         return data;
     } catch (error) {
         console.error('Erro ao cadastrar:', error.message);
-        showMessage('Erro ao cadastrar: ' + error.message, 'error');
+        let errorMessage = 'Erro ao cadastrar: ' + error.message;
+
+        // Tratar erro de e-mail já cadastrado
+        if (error.message.includes('User already registered') || 
+            error.message.includes('already registered') ||
+            error.message.includes('User already exists') ||
+            error.message.includes('já está cadastrado')) {
+            errorMessage = 'Este e-mail já está cadastrado. Tente fazer login.';
+        }
+        
+        showMessage(errorMessage, 'error');
         throw error;
     }
 }
@@ -69,18 +98,13 @@ async function signIn(email, password) {
             throw error;
         }
 
-        // Mostrar mensagem de sucesso
-        showMessage('Login realizado com sucesso!', 'success');
-        
-        // Redirecionar para a página home após 1 segundo
-        setTimeout(() => {
-            window.location.href = 'pages/home.html';
-        }, 1000);
+        // Redirecionar para a página home imediatamente
+        window.location.href = 'pages/home.html';
 
         return data;
     } catch (error) {
         console.error('Erro ao fazer login:', error.message);
-        showMessage('Erro ao fazer login: ' + error.message, 'error');
+        alert('Erro ao fazer login: ' + error.message);
         throw error;
     }
 }
@@ -97,11 +121,13 @@ async function signOut() {
             throw error;
         }
 
+        alert('Logout realizado com sucesso!');
+
         // Redirecionar para login
         window.location.href = '../index.html';
     } catch (error) {
         console.error('Erro ao fazer logout:', error.message);
-        showMessage('Erro ao fazer logout: ' + error.message, 'error');
+        alert('Erro ao fazer logout: ' + error.message);
     }
 }
 
@@ -139,16 +165,82 @@ async function isAuthenticated() {
  * @param {string} type - Tipo de mensagem ('success', 'error', 'info')
  */
 function showMessage(message, type = 'info') {
-    const messageDiv = document.getElementById('mensagem');
-    if (messageDiv) {
-        messageDiv.textContent = message;
-        messageDiv.className = `mensagem mensagem-${type}`;
-        messageDiv.style.display = 'block';
-        
-        // Esconder a mensagem após 5 segundos
-        setTimeout(() => {
-            messageDiv.style.display = 'none';
-        }, 5000);
+    // Verificar se estamos na página de cadastro
+    const isCadastroPage = window.location.pathname.includes('cadastro');
+    
+    if (isCadastroPage) {
+        // Na página de cadastro, logar no console e mostrar alert
+        if (type === 'error') {
+            console.error(message);
+            alert(message); // Mostrar alert para erros também
+        } else if (type === 'success') {
+            alert(message);
+        } else {
+            console.log(message);
+        }
+    } else {
+        // Em outras páginas, usar o comportamento padrão
+        const messageDiv = document.getElementById('mensagem');
+        if (messageDiv) {
+            messageDiv.textContent = message;
+            messageDiv.className = `mensagem mensagem-${type}`;
+            messageDiv.style.display = 'block';
+            
+            // Esconder a mensagem após 5 segundos
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+    }
+}
+
+/**
+ * Função para recuperar senha
+ * @param {string} email - Email do usuário
+ * @returns {Promise} - Retorna o resultado da operação
+ */
+async function resetPassword(email) {
+    try {
+        const { data, error } = await window.supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/index.html'
+        });
+
+        if (error) {
+            // Lançar o erro para ser capturado pelo script.js e exibir no modal
+            throw error;
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Erro ao recuperar senha:', error.message);
+        // Lançar o erro para ser capturado pelo script.js e exibir no modal
+        throw error;
+    }
+}
+
+/**
+ * Função para atualizar a senha do usuário
+ * @param {string} newPassword - A nova senha
+ * @returns {Promise} - Retorna o resultado da operação
+ */
+async function updatePassword(newPassword) {
+    try {
+        const { data, error } = await window.supabase.auth.updateUser({
+            password: newPassword
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        alert('Senha redefinida com sucesso! Você será redirecionado para o login.');
+        window.location.href = 'index.html';
+
+        return data;
+    } catch (error) {
+        console.error('Erro ao atualizar senha:', error.message);
+        alert('Erro ao redefinir senha: ' + error.message);
+        throw error;
     }
 }
 
@@ -181,4 +273,5 @@ window.signOut = signOut;
 window.getCurrentUser = getCurrentUser;
 window.isAuthenticated = isAuthenticated;
 window.checkAuth = checkAuth;
+window.resetPassword = resetPassword;
 

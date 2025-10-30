@@ -83,6 +83,14 @@
             font-size: 3rem;
             font-weight: bold;
             position: relative;
+            overflow: hidden; /* Adicionado para garantir que a imagem não ultrapasse o círculo */
+        }
+        
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
 
         .profile-image::after {
@@ -618,17 +626,17 @@
                 <img src="../../img/logo.png" alt="FolioLabs" class="logo">
             </div>
             <div class="personal-info">
-                <div class="profile-image">LC</div>
-                <h1 class="name">Luiz Cavini</h1>
-                <p class="profession">Desenvolvedor Full-Stack</p>
-                <p class="tagline">Criando soluções inovadoras através de código limpo e design intuitivo</p>
+                <div class="profile-image" data-field="profile-image">LC</div>
+                <h1 class="name" data-field="nome">Luiz Cavini</h1>
+                <p class="profession" data-field="profissao">Desenvolvedor Full-Stack</p>
+                <p class="tagline" data-field="sobre">Criando soluções inovadoras através de código limpo e design intuitivo</p>
             </div>
         </header>
 
         <!-- SOBRE MIM -->
         <section class="section fade-in delay-1">
             <h2 class="section-title">Sobre Mim</h2>
-            <div class="about-content">
+            <div class="about-content" data-field="sobre">
                 <p>Desenvolvedor full-stack com mais de 5 anos de experiência em criar aplicações web escaláveis e de alto desempenho. Especializado em JavaScript, React, Node.js e arquitetura de sistemas cloud.</p>
                 <p>Minha paixão é transformar ideias complexas em soluções elegantes e funcionais. Acredito que a melhor tecnologia é aquela que resolve problemas reais de forma simples e eficiente.</p>
             </div>
@@ -642,21 +650,21 @@
                     <div class="contact-icon">📧</div>
                     <div class="contact-info">
                         <h3>E-mail</h3>
-                        <p>luiz.cavini@exemplo.com</p>
+                        <p data-field="email">luiz.cavini@exemplo.com</p>
                     </div>
                 </div>
                 <div class="contact-item">
                     <div class="contact-icon">📱</div>
                     <div class="contact-info">
                         <h3>Telefone</h3>
-                        <p>(11) 99999-9999</p>
+                        <p data-field="telefone">(11) 99999-9999</p>
                     </div>
                 </div>
                 <div class="contact-item">
                     <div class="contact-icon">💼</div>
                     <div class="contact-info">
                         <h3>LinkedIn</h3>
-                        <p>linkedin.com/in/luizcavini</p>
+                        <p data-field="linkedin">linkedin.com/in/luizcavini</p>
                     </div>
                 </div>
             </div>
@@ -668,7 +676,7 @@
             <div class="skills-grid">
                 <div class="skills-category">
                     <h3>Tecnologias & Ferramentas</h3>
-                    <div class="skills-list">
+                    <div class="skills-list" data-field="conhecimentos">
                         <span class="skill-tag">JavaScript</span>
                         <span class="skill-tag">TypeScript</span>
                         <span class="skill-tag">React</span>
@@ -684,7 +692,7 @@
                 </div>
                 <div class="skills-category">
                     <h3>Habilidades Interpessoais</h3>
-                    <div class="skills-list">
+                    <div class="skills-list" data-field="habilidades">
                         <span class="skill-tag soft">Liderança</span>
                         <span class="skill-tag soft">Comunicação</span>
                         <span class="skill-tag soft">Trabalho em Equipe</span>
@@ -700,7 +708,7 @@
         <!-- EXPERIÊNCIA PROFISSIONAL -->
         <section class="section fade-in delay-4">
             <h2 class="section-title">Experiência Profissional</h2>
-            <div class="timeline">
+            <div class="timeline" data-field="experiencias">
                 <div class="timeline-item">
                     <div class="timeline-date">2022<br>Atual</div>
                     <div class="timeline-content">
@@ -728,10 +736,10 @@
             </div>
         </section>
 
-        <!-- FORMAÇÃO ACADÊMICA -->
+        <!-- FORMAÇÃO ACADÊmica -->
         <section class="section fade-in delay-5">
             <h2 class="section-title">Formação Acadêmica</h2>
-            <div class="education-grid">
+            <div class="education-grid" data-field="formacoes">
                 <div class="education-item">
                     <h3>Bacharelado em Ciência da Computação</h3>
                     <p class="institution">Universidade Federal de Tecnologia</p>
@@ -753,7 +761,7 @@
         <!-- TRABALHOS REALIZADOS -->
         <section class="section fade-in">
             <h2 class="section-title">Projetos Destacados</h2>
-            <div class="projects-grid">
+            <div class="projects-grid" data-field="trabalhos">
                 <div class="project-card">
                     <div class="project-image">E-commerce</div>
                     <div class="project-content">

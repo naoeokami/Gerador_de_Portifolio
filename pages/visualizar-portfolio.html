@@ -63,16 +63,30 @@
          */
         async function loadPortfolioViewer() {
             try {
+                // Verificar se o Supabase está carregado
+                if (!window.supabase) {
+                    throw new Error('Supabase não está carregado');
+                }
+
+                // Verificar se a função getPortfolioById está disponível
+                if (!window.getPortfolioById) {
+                    throw new Error('Função getPortfolioById não está disponível');
+                }
+
                 // Obter o ID do portfólio da URL
                 const urlParams = new URLSearchParams(window.location.search);
                 const portfolioId = urlParams.get('id');
+
+                console.log('ID do portfólio:', portfolioId);
 
                 if (!portfolioId) {
                     throw new Error('ID do portfólio não fornecido');
                 }
 
                 // Buscar os dados do portfólio no Supabase
+                console.log('Buscando portfólio...');
                 const portfolio = await window.getPortfolioById(portfolioId);
+                console.log('Portfólio retornado:', portfolio);
 
                 if (!portfolio) {
                     throw new Error('Portfólio não encontrado');
@@ -80,17 +94,29 @@
 
                 // Extrair os dados
                 const data = portfolio.data;
+                
+                if (!data) {
+                    throw new Error('Dados do portfólio estão vazios ou inválidos');
+                }
+                
+                console.log('Dados do portfólio:', data);
+                
                 const templateName = data.template || 'template1';
+                console.log('Template selecionado:', templateName);
 
                 // Carregar o template
                 const templatePath = `./template/${templateName}.html`;
+                console.log('Carregando template de:', templatePath);
+                
                 const templateResponse = await fetch(templatePath);
+                console.log('Resposta do fetch do template:', templateResponse);
 
                 if (!templateResponse.ok) {
-                    throw new Error(`Erro ao carregar o template: ${templateResponse.status}`);
+                    throw new Error(`Erro ao carregar o template: ${templateResponse.status} - ${templateResponse.statusText}`);
                 }
 
                 const templateHTML = await templateResponse.text();
+                console.log('Template HTML carregado com sucesso');
 
                 // Criar um elemento temporário para parsear o HTML
                 const tempDiv = document.createElement('div');
@@ -125,6 +151,25 @@
          * Função para preencher os dados no template
          */
         function fillTemplateData(templateElement, data) {
+            // Preencher imagem de perfil
+            const profileImageElements = templateElement.querySelectorAll('[data-field="profile-image"]');
+            profileImageElements.forEach(el => {
+                const imageUrl = data.profile_image_url || 'URL_DA_IMAGEM_PADRAO'; // Substitua pela URL da imagem padrão
+                
+                if (el.tagName === 'IMG') {
+                    el.src = imageUrl;
+                } else if (el.tagName === 'DIV') {
+                    // Se for uma DIV, injetar a tag IMG dentro ou usar background-image
+                    if (imageUrl !== 'URL_DA_IMAGEM_PADRAO') {
+                        // Injetar a tag <img> para melhor controle de CSS
+                        el.innerHTML = `<img src="${imageUrl}" alt="Foto de Perfil">`;
+                    } else {
+                        // Se não houver imagem, exibir a inicial (fallback)
+                        el.innerHTML = data.nome ? data.nome.charAt(0) : '';
+                    }
+                }
+            });
+
             // Preencher nome
             const nameElements = templateElement.querySelectorAll('[data-field="nome"]');
             nameElements.forEach(el => {
@@ -173,63 +218,90 @@
 
             // Preencher conhecimentos
             const conhecimentosContainer = templateElement.querySelector('[data-field="conhecimentos"]');
-            if (conhecimentosContainer && data.conhecimentos && data.conhecimentos.length > 0) {
-                conhecimentosContainer.innerHTML = data.conhecimentos
-                    .map(k => `<span class="skill-tag">${k}</span>`)
-                    .join('');
+            if (conhecimentosContainer) {
+                if (data.conhecimentos && data.conhecimentos.length > 0) {
+                    conhecimentosContainer.innerHTML = data.conhecimentos
+                        .map(k => `<span class="skill-tag">${k}</span>`)
+                        .join('');
+                } else {
+                    // Remove o conteúdo do container se não houver dados
+                    conhecimentosContainer.innerHTML = '';
+                }
             }
 
             // Preencher habilidades
             const habilidadesContainer = templateElement.querySelector('[data-field="habilidades"]');
-            if (habilidadesContainer && data.habilidades && data.habilidades.length > 0) {
-                habilidadesContainer.innerHTML = data.habilidades
-                    .map(h => `<span class="skill-tag soft">${h}</span>`)
-                    .join('');
+            if (habilidadesContainer) {
+                if (data.habilidades && data.habilidades.length > 0) {
+                    habilidadesContainer.innerHTML = data.habilidades
+                        .map(h => `<span class="skill-tag soft">${h}</span>`)
+                        .join('');
+                } else {
+                    // Remove o conteúdo do container se não houver dados
+                    habilidadesContainer.innerHTML = '';
+                }
             }
 
             // Preencher experiências
             const experienciasContainer = templateElement.querySelector('[data-field="experiencias"]');
-            if (experienciasContainer && data.experiencias && data.experiencias.length > 0) {
-                experienciasContainer.innerHTML = data.experiencias
-                    .map(exp => `
-                        <div class="timeline-item">
-                            <div class="timeline-date">${exp.inicio ? exp.inicio.substring(0, 7) : 'N/A'}</div>
-                            <div class="timeline-content">
-                                <h3>${exp.cargo || 'Cargo não informado'}</h3>
-                                <div class="company">${exp.empresa || 'Empresa não informada'}</div>
-                                <p>${exp.descricao || 'Descrição não fornecida'}</p>
+            if (experienciasContainer) {
+                // Se houver dados, substitui. Se não houver, remove o conteúdo (mantendo o container)
+                if (data.experiencias && data.experiencias.length > 0) {
+                    experienciasContainer.innerHTML = data.experiencias
+                        .map(exp => `
+                            <div class="timeline-item">
+                                <div class="timeline-date">${exp.inicio ? exp.inicio.substring(0, 7) : 'N/A'} - ${exp.fim ? exp.fim.substring(0, 7) : 'Atual'}</div>
+                                <div class="timeline-content">
+                                    <h3>${exp.cargo || 'Cargo não informado'}</h3>
+                                    <div class="company">${exp.empresa || 'Empresa não informada'}</div>
+                                    <p>${exp.descricao || 'Descrição não fornecida'}</p>
+                                </div>
                             </div>
-                        </div>
-                    `)
-                    .join('');
+                        `)
+                        .join('');
+                } else {
+                    // Remove o conteúdo do container, deixando-o vazio
+                    experienciasContainer.innerHTML = '';
+                    // Opcional: remover a seção inteira se estiver vazia (depende do template)
+                    // let section = experienciasContainer.closest('section');
+                    // if (section) section.remove();
+                }
             }
 
             // Preencher formações
             const formacoesContainer = templateElement.querySelector('[data-field="formacoes"]');
-            if (formacoesContainer && data.formacoes && data.formacoes.length > 0) {
-                formacoesContainer.innerHTML = data.formacoes
-                    .map(form => `
-                        <div class="education-item">
-                            <h3>${form.curso || 'Curso não informado'}</h3>
-                            <p class="institution">${form.instituicao || 'Instituição não informada'}</p>
-                            <p class="period">${form.inicio ? form.inicio.substring(0, 7) : 'N/A'} - ${form.fim ? form.fim.substring(0, 7) : 'Atual'}</p>
-                        </div>
-                    `)
-                    .join('');
+            if (formacoesContainer) {
+                if (data.formacoes && data.formacoes.length > 0) {
+                    formacoesContainer.innerHTML = data.formacoes
+                        .map(form => `
+                            <div class="education-item">
+                                <h3>${form.curso || 'Curso não informado'}</h3>
+                                <p class="institution">${form.instituicao || 'Instituição não informada'}</p>
+                                <p class="period">${form.inicio ? form.inicio.substring(0, 7) : 'N/A'} - ${form.fim ? form.fim.substring(0, 7) : 'Atual'}</p>
+                            </div>
+                        `)
+                        .join('');
+                } else {
+                    formacoesContainer.innerHTML = '';
+                }
             }
 
             // Preencher trabalhos
             const trabalhosContainer = templateElement.querySelector('[data-field="trabalhos"]');
-            if (trabalhosContainer && data.trabalhos && data.trabalhos.length > 0) {
-                trabalhosContainer.innerHTML = data.trabalhos
-                    .map(trab => `
-                        <div class="project-card">
-                            <h3>${trab.titulo || 'Título não informado'}</h3>
-                            <p>${trab.descricao || 'Descrição não fornecida'}</p>
-                            <a href="${trab.url || '#'}" target="_blank" class="project-link">Ver Projeto →</a>
-                        </div>
-                    `)
-                    .join('');
+            if (trabalhosContainer) {
+                if (data.trabalhos && data.trabalhos.length > 0) {
+                    trabalhosContainer.innerHTML = data.trabalhos
+                        .map(trab => `
+                            <div class="project-card">
+                                <h3>${trab.titulo || 'Título não informado'}</h3>
+                                <p>${trab.descricao || 'Descrição não fornecida'}</p>
+                                <a href="${trab.url || '#'}" target="_blank" class="project-link">Ver Projeto →</a>
+                            </div>
+                        `)
+                        .join('');
+                } else {
+                    trabalhosContainer.innerHTML = '';
+                }
             }
         }
 

@@ -873,6 +873,23 @@ footer {
     height: 60px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--c2), var(--c3));
+    /* Adicionado para centralizar a letra de inicial (fallback) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: var(--c1);
+    /* Adicionado para garantir que a imagem preencha o espaço */
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+.portfolio-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .portfolio-info h3 {
@@ -1173,4 +1190,15 @@ footer {
     .membro {
         padding: 15px 10px;
     }
+}
+/* Estilo para botão inativo na home */
+.botoes_acao .botoes_container .inativo .botao_acao {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.botoes_acao .botoes_container .inativo .botao_acao:hover {
+    background-color: #ccc;
+    box-shadow: none;
 }

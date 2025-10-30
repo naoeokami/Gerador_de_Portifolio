@@ -42,8 +42,87 @@ mobileNavLinks.forEach(link => {
 
 document.addEventListener('DOMContentLoaded', function () {
     // Verificar se estamos na página de login
-    const loginForm = document.querySelector('.login_main form');
-    if (loginForm) {
+    const loginForm = document.getElementById('login-form');
+    const resetPasswordForm = document.getElementById('reset-password-form');
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type');
+
+    // 1. Lógica para exibir o formulário de redefinição se houver um token
+    if (type === 'recovery' && resetPasswordForm) {
+        if (loginForm) loginForm.style.display = 'none';
+        resetPasswordForm.style.display = 'block';
+
+        resetPasswordForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (newPassword !== confirmPassword) {
+                alert('As senhas não coincidem!');
+                return;
+            }
+
+            if (window.updatePassword) {
+                await window.updatePassword(newPassword);
+            } else {
+                alert('Erro: Módulo de autenticação não carregado');
+            }
+        });
+    }
+
+    // 2. Lógica do Formulário de Login Padrão
+    if (loginForm && loginForm.style.display !== 'none') {
+        // Lógica do Modal de Recuperação de Senha
+        const esqueceuSenhaLink = document.getElementById('esqueceu-senha');
+        const modal = document.getElementById('forgot-password-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const forgotPasswordForm = document.getElementById('forgot-password-form');
+        const modalMessage = document.getElementById('modal-message');
+
+        if (esqueceuSenhaLink && modal && closeModalBtn && forgotPasswordForm) {
+            // Abrir modal
+            esqueceuSenhaLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                modal.style.display = 'block';
+                modalMessage.textContent = ''; // Limpar mensagem
+                document.getElementById('forgot-email').value = ''; // Limpar campo
+            });
+
+            // Fechar modal
+            closeModalBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            // Lógica de envio do formulário
+            forgotPasswordForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                modalMessage.textContent = ''; // Limpar mensagem anterior
+                const email = document.getElementById('forgot-email').value;
+
+                if (email) {
+                    if (window.resetPassword) {
+                        try {
+                            await window.resetPassword(email);
+                            modalMessage.style.color = 'green';
+                            modalMessage.textContent = 'Email de recuperação enviado! Verifique sua caixa de entrada.';
+                            // Não fechar o modal para que o usuário veja a mensagem
+                        } catch (error) {
+                            modalMessage.style.color = 'red';
+                            modalMessage.textContent = 'Erro: Email não encontrado ou inválido.';
+                        }
+                    } else {
+                        modalMessage.style.color = 'red';
+                        modalMessage.textContent = 'Erro: Módulo de autenticação não carregado.';
+                    }
+                }
+            });
+        }
         loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -241,6 +320,25 @@ document.addEventListener('DOMContentLoaded', function () {
 // ========================================
 
 // Tags System
+window.addTag = (listId, tagText) => {
+    const list = document.getElementById(listId);
+    
+    if (!list || !tagText) return;
+
+    const tag = document.createElement('div');
+    tag.className = 'tag';
+    tag.innerHTML = `
+        ${tagText}
+        <span class="remove-tag">&times;</span>
+        <input type="hidden" name="${listId === 'conhecimentos-list' ? 'conhecimento[]' : 'habilidade[]'}" value="${tagText}">
+    `;
+    list.appendChild(tag);
+
+    tag.querySelector('.remove-tag').addEventListener('click', () => {
+        tag.remove();
+    });
+};
+
 function setupTags(inputId, listId) {
     const input = document.getElementById(inputId);
     const list = document.getElementById(listId);
@@ -279,7 +377,110 @@ function setupTags(inputId, listId) {
     });
 }
 
-// Dynamic Fields
+/// Dynamic Fields
+
+// Função auxiliar para criar e preencher um item repetitivo
+window.addItem = (containerId, data) => {
+    const container = document.getElementById(containerId);
+    if (!container || !data) return;
+
+    let itemTemplate;
+    let fields;
+
+    if (containerId === 'experiencias-container') {
+        itemTemplate = {
+            className: 'experiencia-item',
+            html: `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cargo *</label>
+                        <input type="text" name="cargo[]" required class="form-input" value="${data.cargo || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>Empresa *</label>
+                        <input type="text" name="empresa[]" required class="form-input" value="${data.empresa || ''}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data de Início</label>
+                        <input type="month" name="inicio[]" class="form-input" value="${data.inicio || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Término</label>
+                        <input type="month" name="fim[]" class="form-input" value="${data.fim || ''}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea name="descricao_exp[]" rows="3" class="form-textarea" placeholder="Descreva suas responsabilidades e conquistas...">${data.descricao || ''}</textarea>
+                </div>
+                <button type="button" class="remove-item btn-remove">Remover</button>
+            `
+        };
+    } else if (containerId === 'formacao-container') {
+        itemTemplate = {
+            className: 'formacao-item',
+            html: `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Curso *</label>
+                        <input type="text" name="curso[]" required class="form-input" value="${data.curso || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>Instituição *</label>
+                        <input type="text" name="instituicao[]" required class="form-input" value="${data.instituicao || ''}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data de Início</label>
+                        <input type="month" name="inicio_curso[]" class="form-input" value="${data.inicio || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Conclusão</label>
+                        <input type="month" name="fim_curso[]" class="form-input" value="${data.fim || ''}">
+                    </div>
+                </div>
+                <button type="button" class="remove-item btn-remove">Remover</button>
+            `
+        };
+    } else if (containerId === 'trabalhos-container') {
+        itemTemplate = {
+            className: 'trabalho-item',
+            html: `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Título do Trabalho *</label>
+                        <input type="text" name="titulo_trabalho[]" required class="form-input" value="${data.titulo || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>URL *</label>
+                        <input type="url" name="url_trabalho[]" required class="form-input" placeholder="https://..." value="${data.url || ''}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea name="descricao_trabalho[]" rows="2" class="form-textarea" placeholder="Breve descrição do trabalho...">${data.descricao || ''}</textarea>
+                </div>
+                <button type="button" class="remove-item btn-remove">Remover</button>
+            `
+        };
+    } else {
+        return;
+    }
+
+    const newItem = document.createElement('div');
+    newItem.className = itemTemplate.className;
+    newItem.innerHTML = itemTemplate.html;
+    container.appendChild(newItem);
+
+    // Adicionar listener de remoção ao novo item
+    newItem.querySelector('.remove-item').addEventListener('click', (e) => {
+        e.target.closest(`.${itemTemplate.className}`).remove();
+    });
+};
+
 function setupDynamicFields(containerId, addBtnClass, itemTemplate) {
     const container = document.getElementById(containerId);
     const addBtn = document.querySelector(`.${addBtnClass}`);
@@ -287,29 +488,16 @@ function setupDynamicFields(containerId, addBtnClass, itemTemplate) {
     if (!container || !addBtn) return;
 
     addBtn.addEventListener('click', () => {
-        const newItem = document.createElement('div');
-        newItem.className = itemTemplate.className;
-        newItem.innerHTML = itemTemplate.html;
-        container.appendChild(newItem);
-
-        // Add remove functionality
-        const removeBtn = newItem.querySelector('.remove-item');
-        if (removeBtn) {
-            removeBtn.addEventListener('click', () => {
-                newItem.remove();
-            });
-        }
+        // Ao clicar no botão de adicionar, chame a função global com dados vazios
+        window.addItem(containerId, {});
     });
 
-    // Add remove to first item
-    const firstRemoveBtn = container.querySelector('.remove-item');
-    if (firstRemoveBtn) {
-        firstRemoveBtn.addEventListener('click', function () {
-            if (container.children.length > 1) {
-                this.closest(`.${itemTemplate.className}`).remove();
-            }
+    // Adicionar listener de remoção aos itens iniciais (se houver)
+    container.querySelectorAll('.remove-item').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.target.closest(`.${itemTemplate.className}`).remove();
         });
-    }
+    });
 }
 
 // ========================================

@@ -53,19 +53,10 @@
             <!-- Filtros -->
             <div class="filtros-container">
                 <div class="filtro-grupo">
-                    <label for="categoria">Categoria</label>
-                    <select id="categoria" class="filtro-select">
-                        <option value="">Todas as categorias</option>
-                        <option value="design">Design</option>
-                        <option value="dev">Desenvolvimento</option>
-                        <option value="marketing">Marketing</option>
-                        <option value="fotografia">Fotografia</option>
-                    </select>
+                    <label for="nomePessoa">Nome da Pessoa</label>
+                    <input type="text" id="nomePessoa" class="filtro-input" placeholder="Ex: João Boldrin">
                 </div>
-                <div class="filtro-grupo">
-                    <label for="habilidade">Habilidade</label>
-                    <input type="text" id="habilidade" class="filtro-input" placeholder="Ex: React, Photoshop...">
-                </div>
+                
                 <div class="filtro-grupo">
                     <label for="ordenar">Ordenar por</label>
                     <select id="ordenar" class="filtro-select">
@@ -219,6 +210,73 @@
     
     <!-- Script principal -->
     <script src="../js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const portfolioGrid = document.getElementById('portfolio-grid');
+            const nomePessoaInput = document.getElementById('nomePessoa');
+            const ordenarSelect = document.getElementById('ordenar');
+            const btnFiltrar = document.querySelector('.btn-filtrar');
+            
+            // Função para carregar e renderizar os portfólios
+            async function loadAndRenderPortfolios(filters = {}) {
+                if (!window.getAllPortfolios) {
+                    console.error('Função getAllPortfolios não disponível.');
+                    return;
+                }
+
+                portfolioGrid.innerHTML = '<p>Carregando portfólios...</p>';
+                
+                // A função getAllPortfolios já faz a filtragem e ordenação no backend (Supabase)
+                const portfolios = await window.getAllPortfolios(filters);
+
+                portfolioGrid.innerHTML = ''; // Limpa o carregamento
+                
+                if (portfolios.length === 0) {
+                    portfolioGrid.innerHTML = '<p>Nenhum portfólio encontrado com os filtros aplicados.</p>';
+                    return;
+                }
+
+                portfolios.forEach(portfolio => {
+                    const data = portfolio.data;
+                    const card = document.createElement('div');
+                    card.className = 'portfolio-card';
+                    card.innerHTML = `
+                        <div class="portfolio-header">
+                            <div class="portfolio-avatar">
+                                ${data.profile_image_url ? `<img src="${data.profile_image_url}" alt="Foto de Perfil">` : `${data.nome ? data.nome.charAt(0) : ''}`}
+                            </div>
+                            <div class="portfolio-info">
+                                <h3>${data.nome || 'Portfólio Sem Nome'}</h3>
+                                <p>${data.profissao || 'Profissão não informada'}</p>
+                            </div>
+                        </div>
+                        <div class="portfolio-tags">
+                            ${(data.habilidades || []).slice(0, 3).map(h => `<span class="tag">${h}</span>`).join('')}
+                        </div>
+                        <p class="portfolio-desc">${data.sobre ? data.sobre.substring(0, 100) + '...' : 'Descrição não fornecida.'}</p>
+                        <a href="visualizar-portfolio.html?id=${portfolio.id}" class="btn-visualizar">Visualizar Portfólio</a>
+                    `;
+                    portfolioGrid.appendChild(card);
+                });
+            }
+
+            // Função para aplicar os filtros
+            function applyFilters() {
+                const filters = {
+                    nomePessoa: nomePessoaInput.value.trim(),
+                    ordenar: ordenarSelect.value
+                };
+                loadAndRenderPortfolios(filters);
+            }
+
+            // Event Listeners
+            btnFiltrar.addEventListener('click', applyFilters);
+            ordenarSelect.addEventListener('change', applyFilters);
+            
+            // Carregar portfólios na inicialização
+            loadAndRenderPortfolios();
+        });
+    </script>
 </body>
 
 </html>
