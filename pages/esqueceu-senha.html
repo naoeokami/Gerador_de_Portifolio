@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html class="login" lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha - FolioLabs</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="login">
+    <main class="login_main">
+        <div class="login_div">
+
+            <img class="logo_login" src="../img/logo.png" alt="logo">
+            <h1 class="login_h3">Recuperar Senha</h1>
+            
+            <!-- Formulário de Recuperação de Senha -->
+            <form id="forgot-password-form">
+                <p style="text-align: center; margin-bottom: 20px;">Digite seu email para receber o link de recuperação:</p>
+                <input type="email" name="email" class="input_dados" id="forgot-email" placeholder="Digite seu email" required>
+                <button type="submit" class="botao_login">Enviar Link de Recuperação</button>
+                <div id="message" style="margin-top: 15px; text-align: center; color: red;"></div>
+                <a class="cadastro" href="../index.html" style="margin-top: 10px; display: block;">Voltar para o Login</a>
+            </form>
+
+        </div>
+    </main>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.js"></script>
+    
+    <!-- Configuração do Supabase -->
+    <script src="../js/supabase_config.js"></script>
+    
+    <!-- Módulos de Autenticação -->
+    <script src="../js/auth.js"></script>
+    
+    <!-- Script principal para lidar com o formulário de recuperação -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const forgotPasswordForm = document.getElementById('forgot-password-form');
+            const forgotEmailInput = document.getElementById('forgot-email');
+            const messageDiv = document.getElementById('message');
+
+            forgotPasswordForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                messageDiv.textContent = ''; // Limpa mensagens anteriores
+
+                const email = forgotEmailInput.value;
+
+                // Chama a função do Supabase para enviar o email de recuperação
+                const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + '/pages/update-password.html' // URL para onde o usuário será redirecionado após clicar no link
+                });
+
+                if (error) {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = 'Erro ao enviar o email: ' + error.message;
+                } else {
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = 'Link de recuperação enviado para ' + email + '. Por favor, verifique sua caixa de entrada.';
+                    forgotPasswordForm.reset();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

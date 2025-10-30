@@ -520,7 +520,7 @@
         /* ===== TRABALHOS ===== */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
             gap: 35px;
         }
 
@@ -553,29 +553,6 @@
             transform: translateY(-10px) scale(1.02);
             box-shadow: var(--shadow-hover);
             border-color: var(--accent-primary);
-        }
-
-        .project-image {
-            height: 240px;
-            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-tertiary) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-primary);
-            font-size: 2rem;
-            font-weight: bold;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
         }
 
         .project-content {
@@ -912,7 +889,6 @@
             <h2 class="section-title">Projetos em Destaque</h2>
             <div class="projects-grid" data-field="trabalhos">
                 <div class="project-card">
-                    <div class="project-image">NEXUS</div>
                     <div class="project-content">
                         <h3>Plataforma de Analytics</h3>
                         <p>Sistema de business intelligence em tempo real processando 1M+ eventos diários. Arquitetura serverless com AWS Lambda e real-time dashboards.</p>
@@ -920,7 +896,6 @@
                     </div>
                 </div>
                 <div class="project-card">
-                    <div class="project-image">QUANTUM</div>
                     <div class="project-content">
                         <h3>Framework de Machine Learning</h3>
                         <p>Framework open-source para deploy de modelos de ML. Auto-scaling, monitoramento em tempo real e interface de gestão intuitiva.</p>
@@ -928,7 +903,6 @@
                     </div>
                 </div>
                 <div class="project-card">
-                    <div class="project-image">SYNAPSE</div>
                     <div class="project-content">
                         <h3>Sistema de Collaboration</h3>
                         <p>Plataforma de colaboração empresarial com real-time editing, video conferencing e gestão de projetos integrada.</p>

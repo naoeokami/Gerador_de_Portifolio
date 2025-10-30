@@ -15,12 +15,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     const portfolio = await window.getMyPortfolio();
     
     const criarPortfolioLink = document.querySelector('.botoes_acao .botoes_container a:nth-child(1)');
+    const excluirPortfolioLink = document.getElementById('excluir_portfolio_link');
+    const excluirPortfolioBtn = document.getElementById('excluir_portfolio');
     const editarPortfolioLink = document.querySelector('.botoes_acao .botoes_container a:nth-child(2)');
     const criarPortfolioBtn = document.getElementById('criar_portfolio');
     const editarPortfolioBtn = document.getElementById('editar_portfolio');
     const descricao = document.querySelector('.botoes_acao .descricao');
 
     if (portfolio) {
+        // d) Botão "Excluir Portfólio" fica visível e funcional
+        excluirPortfolioLink.style.display = 'block';
+        excluirPortfolioBtn.addEventListener('click', handleDeletePortfolio);
         // O usuário TEM um portfólio
         
         // a) Botão "Criar Portfólio" vira "Visualizar Portfólio"
@@ -46,6 +51,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         // b) Botão "Editar Portfólio" fica inativo
         editarPortfolioBtn.textContent = 'Editar Portfólio';
         editarPortfolioLink.href = '#'; // Desativar o link
+        // d) Botão "Excluir Portfólio" fica oculto
+        excluirPortfolioLink.style.display = 'none';
         editarPortfolioLink.classList.add('inativo'); // Adicionar classe para estilo de inativo (cinza)
         editarPortfolioBtn.disabled = true; // Desabilitar o botão
         
@@ -66,3 +73,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         nomeUserElement.textContent = 'Usuário';
     }
 });
+
+// Função para excluir o portfólio
+async function handleDeletePortfolio() {
+    if (!confirm('Tem certeza que deseja excluir seu portfólio? Esta ação é irreversível.')) {
+        return;
+    }
+
+    const user = await window.getCurrentUser();
+    if (!user) {
+        alert('Usuário não autenticado.');
+        window.location.href = '../index.html';
+        return;
+    }
+
+    const portfolio = await window.getMyPortfolio();
+    if (!portfolio) {
+        alert('Nenhum portfólio encontrado para exclusão.');
+        return;
+    }
+
+    // Chama a função global de exclusão de portfólio (a ser implementada em portfolio.js)
+    const success = await window.deletePortfolio(portfolio.id);
+
+    if (success) {
+        alert('Portfólio excluído com sucesso.');
+        // Recarrega a página para atualizar o estado dos botões
+        window.location.reload();
+    } else {
+        alert('Erro ao excluir o portfólio. Tente novamente.');
+    }
+}

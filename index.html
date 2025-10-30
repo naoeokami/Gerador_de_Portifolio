@@ -20,16 +20,8 @@
 	                <input type="email" name="email" class="input_dados" id="email" placeholder="Digite seu email" required>
 	                <input type="password" name="senha" class="input_dados" id="senha" placeholder="Digite sua senha" required>
 	                <button type="submit" class="botao_login" id="acessar">Acessar</button>
-	                <a class="cadastro" href="#" id="esqueceu-senha">Esqueceu a senha?</a>
+	                <a class="cadastro" href="pages/esqueceu-senha.html">Esqueceu a senha?</a>
 	                <a class="cadastro" href="pages/cadastro.html">Não tem Cadastro? Faça agora mesmo</a>
-	            </form>
-
-	            <!-- Formulário de Redefinição de Senha (Inicialmente Oculto) -->
-	            <form id="reset-password-form" style="display: none;">
-	                <p style="text-align: center; margin-bottom: 20px;">Redefina sua senha</p>
-	                <input type="password" id="new-password" class="input_dados" placeholder="Nova Senha" required>
-	                <input type="password" id="confirm-password" class="input_dados" placeholder="Confirme a Nova Senha" required>
-	                <button type="submit" class="botao_login">Redefinir Senha</button>
 	            </form>
         </div>
     </main>
@@ -46,20 +38,6 @@
     
     <!-- Script principal -->
     <script src="js/script.js"></script>
-
-    <!-- Modal de Recuperação de Senha -->
-    <div id="forgot-password-modal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
-        <div class="modal-content" style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 400px; border-radius: 8px;">
-            <span class="close-button" id="close-modal-btn" style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
-            <h2 style="margin-bottom: 20px;">Recuperar Senha</h2>
-            <form id="forgot-password-form">
-                <p style="margin-bottom: 15px;">Digite seu email para receber o link de recuperação:</p>
-                <input type="email" id="forgot-email" class="input_dados" placeholder="Seu email" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px;">
-                <button type="submit" class="botao_login">Enviar Link</button>
-            </form>
-            <div id="modal-message" style="margin-top: 15px; text-align: center; color: red;"></div>
-        </div>
-    </div>
 </body>
 
 </html>

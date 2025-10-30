@@ -519,6 +519,41 @@ function showMessage(message, type = 'info') {
     }
 }
 
+/**
+ * Função para deletar um portfólio do Supabase
+ * @param {string} portfolioId - O ID do portfólio a ser deletado
+ * @returns {boolean} - true se a exclusão for bem-sucedida, false caso contrário
+ */
+async function deletePortfolio(portfolioId) {
+    try {
+        if (!window.supabase) {
+            console.error('Supabase client not initialized.');
+            return false;
+        }
+
+        // 1. Deletar o registro do portfólio na tabela 'portfolios'
+        const { error: deleteError } = await window.supabase
+            .from('portfolios')
+            .delete()
+            .eq('id', portfolioId);
+
+        if (deleteError) {
+            console.error('Erro ao deletar o portfólio:', deleteError);
+            return false;
+        }
+
+        // 2. Opcional: Deletar a imagem de perfil associada, se houver.
+        // Como o campo 'profile_image_url' não é passado, seria necessário
+        // buscar o portfólio antes de deletar para obter o caminho da imagem.
+        // Por enquanto, vamos focar apenas na exclusão do registro do DB.
+
+        return true;
+    } catch (e) {
+        console.error('Exceção ao deletar o portfólio:', e);
+        return false;
+    }
+}
+
 // Exportar funções para uso global
 window.savePortfolio = savePortfolio;
 window.getMyPortfolio = getMyPortfolio;
