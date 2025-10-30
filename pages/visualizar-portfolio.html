@@ -46,17 +46,13 @@
         <div class="loading">Carregando portfólio...</div>
     </div>
 
-    <!-- SDK do Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.js"></script>
     
-    <!-- Configuração do Supabase -->
     <script src="../js/supabase_config.js"></script>
-    
-    <!-- Módulos -->
+
     <script src="../js/auth.js"></script>
     <script src="../js/portfolio.js"></script>
     
-    <!-- Script de visualização -->
     <script>
         /**
          * Função para carregar e exibir o portfólio
@@ -262,9 +258,6 @@
                 } else {
                     // Remove o conteúdo do container, deixando-o vazio
                     experienciasContainer.innerHTML = '';
-                    // Opcional: remover a seção inteira se estiver vazia (depende do template)
-                    // let section = experienciasContainer.closest('section');
-                    // if (section) section.remove();
                 }
             }
 
@@ -293,10 +286,13 @@
                     trabalhosContainer.innerHTML = data.trabalhos
                         .map(trab => `
                             <div class="project-card">
-                                <h3>${trab.titulo || 'Título não informado'}</h3>
-                                <p>${trab.descricao || 'Descrição não fornecida'}</p>
-                                <a href="${trab.url || '#'}" target="_blank" class="project-link">Ver Projeto →</a>
+                                <div class="project-content">
+                                    <h3>${trab.titulo || 'Título não informado'}</h3>
+                                    <p>${trab.descricao || 'Descrição não fornecida'}</p>
+                                    <a href="${trab.url || '#'}" target="_blank" class="project-link">Ver Projeto →</a>
+                                </div>
                             </div>
+
                         `)
                         .join('');
                 } else {
