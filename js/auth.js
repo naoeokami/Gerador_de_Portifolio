@@ -1,107 +1,117 @@
 // ========================================
-// MÓDULO DE AUTENTICAÇÃO COM SUPABASE
-// O cliente Supabase é acessado via window.supabase
+// MÓDULO DE AUTENTICAÇÃO LOCAL (DEMONSTRAÇÃO / FRONTEND)
+// Armazena usuários em localStorage ('foliolabs_users')
+// e sessão atual em localStorage ('foliolabs_session')
 // ========================================
 
 /**
+ * Função auxiliar para buscar a lista de usuários cadastrados
+ */
+function getUsersFromStorage() {
+    try {
+        const usersJson = localStorage.getItem('foliolabs_users');
+        return usersJson ? JSON.parse(usersJson) : [];
+    } catch (e) {
+        console.error('Erro ao ler usuários do localStorage:', e);
+        return [];
+    }
+}
+
+/**
+ * Função auxiliar para salvar a lista de usuários
+ */
+function saveUsersToStorage(users) {
+    try {
+        localStorage.setItem('foliolabs_users', JSON.stringify(users));
+    } catch (e) {
+        console.error('Erro ao salvar usuários no localStorage:', e);
+    }
+}
+
+/**
+ * Função auxiliar para obter o caminho relativo correto para páginas
+ */
+function getPath(target) {
+    const isInsidePages = window.location.pathname.includes('/pages/');
+    if (target === 'home') {
+        return isInsidePages ? 'home.html' : 'pages/home.html';
+    }
+    if (target === 'login') {
+        return isInsidePages ? '../index.html' : 'index.html';
+    }
+    return target;
+}
+
+/**
  * Função para registrar um novo usuário
- * @param {string} email - Email do usuário
- * @param {string} password - Senha do usuário
- * @param {string} name - Nome do usuário
- * @returns {Promise} - Retorna o resultado da operação
  */
 async function signUp(email, password, name) {
     try {
-        // Validar se as senhas coincidem
         const confirmPasswordElement = document.getElementById('confirmar_senha');
         const confirmPassword = confirmPasswordElement ? confirmPasswordElement.value : '';
         if (password !== confirmPassword) {
             throw new Error('As senhas não coincidem!');
         }
 
-        // Verificar se o email já está cadastrado
-        console.log('Verificando se o email já está cadastrado...');
-        const { data: existingUsers, error: checkError } = await window.supabase
-            .from('auth.users')
-            .select('email')
-            .eq('email', email)
-            .maybeSingle();
+        const users = getUsersFromStorage();
+        const existingUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
 
-        // Como não temos acesso direto à tabela auth.users, vamos tentar fazer login
-        // Se o login funcionar, significa que o usuário já existe
-        // Mas isso não é ideal. Vamos confiar no erro do Supabase ao tentar criar um usuário duplicado.
+        if (existingUser) {
+            throw new Error('Este e-mail já está cadastrado. Tente fazer login.');
+        }
 
-        // Criar o usuário no Supabase
-        const { data, error } = await window.supabase.auth.signUp({
+        const newUser = {
+            id: 'user_' + Date.now(),
             email: email,
             password: password,
-            options: {
-                data: {
-                    name: name
-                }
+            name: name,
+            user_metadata: {
+                name: name
             }
-        });
+        };
 
-        if (error) {
-            throw error;
-        }
+        users.push(newUser);
+        saveUsersToStorage(users);
 
-        // Verificar se o usuário já existe (Supabase retorna data mesmo para emails duplicados)
-        // Precisamos verificar se o usuário foi realmente criado ou se já existia
-        if (data && data.user) {
-            // Verificar se o usuário já estava confirmado (indica que já existia)
-            if (data.user.identities && data.user.identities.length === 0) {
-                throw new Error('Este e-mail já está cadastrado. Tente fazer login.');
-            }
-        }
+        // Fazer auto-login
+        localStorage.setItem('foliolabs_session', JSON.stringify(newUser));
 
-        // Mostrar mensagem de sucesso
-        showMessage('Cadastro realizado com sucesso! Verifique seu email para confirmar a conta.', 'success');
+        showMessage('Cadastro realizado com sucesso! Redirecionando...', 'success');
         
-        // Limpar o formulário
-        document.querySelector('form').reset();
-        
-        // Redirecionamento removido a pedido do usuário
+        const form = document.querySelector('form');
+        if (form) form.reset();
 
-        return data;
+        setTimeout(() => {
+            window.location.href = getPath('home');
+        }, 1200);
+
+        return { user: newUser };
     } catch (error) {
         console.error('Erro ao cadastrar:', error.message);
-        let errorMessage = 'Erro ao cadastrar: ' + error.message;
-
-        // Tratar erro de e-mail já cadastrado
-        if (error.message.includes('User already registered') || 
-            error.message.includes('already registered') ||
-            error.message.includes('User already exists') ||
-            error.message.includes('já está cadastrado')) {
-            errorMessage = 'Este e-mail já está cadastrado. Tente fazer login.';
-        }
-        
-        showMessage(errorMessage, 'error');
+        showMessage(error.message, 'error');
         throw error;
     }
 }
 
 /**
  * Função para fazer login
- * @param {string} email - Email do usuário
- * @param {string} password - Senha do usuário
- * @returns {Promise} - Retorna o resultado da operação
  */
 async function signIn(email, password) {
     try {
-        const { data, error } = await window.supabase.auth.signInWithPassword({
-            email: email,
-            password: password
-        });
+        const users = getUsersFromStorage();
+        const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
 
-        if (error) {
-            throw error;
+        if (!user) {
+            throw new Error('E-mail ou senha incorretos.');
         }
 
-        // Redirecionar para a página home imediatamente
-        window.location.href = 'pages/home.html';
+        // Salvar sessão no localStorage
+        localStorage.setItem('foliolabs_session', JSON.stringify(user));
 
-        return data;
+        // Redirecionar para home
+        window.location.href = getPath('home');
+
+        return { user };
     } catch (error) {
         console.error('Erro ao fazer login:', error.message);
         alert('Erro ao fazer login: ' + error.message);
@@ -111,20 +121,12 @@ async function signIn(email, password) {
 
 /**
  * Função para fazer logout
- * @returns {Promise} - Retorna o resultado da operação
  */
 async function signOut() {
     try {
-        const { error } = await window.supabase.auth.signOut();
-
-        if (error) {
-            throw error;
-        }
-
+        localStorage.removeItem('foliolabs_session');
         alert('Logout realizado com sucesso!');
-
-        // Redirecionar para login
-        window.location.href = '../index.html';
+        window.location.href = getPath('login');
     } catch (error) {
         console.error('Erro ao fazer logout:', error.message);
         alert('Erro ao fazer logout: ' + error.message);
@@ -133,16 +135,15 @@ async function signOut() {
 
 /**
  * Função para obter o usuário atual
- * @returns {Promise} - Retorna os dados do usuário
  */
 async function getCurrentUser() {
     try {
-        const { data: { user }, error } = await window.supabase.auth.getUser();
-
-        if (error) {
-            throw error;
+        const sessionJson = localStorage.getItem('foliolabs_session');
+        if (!sessionJson) return null;
+        const user = JSON.parse(sessionJson);
+        if (!user.user_metadata) {
+            user.user_metadata = { name: user.name };
         }
-
         return user;
     } catch (error) {
         console.error('Erro ao obter usuário atual:', error.message);
@@ -152,7 +153,6 @@ async function getCurrentUser() {
 
 /**
  * Função para verificar se o usuário está autenticado
- * @returns {Promise} - Retorna true se autenticado, false caso contrário
  */
 async function isAuthenticated() {
     const user = await getCurrentUser();
@@ -160,83 +160,70 @@ async function isAuthenticated() {
 }
 
 /**
- * Função para exibir mensagens ao usuário
- * @param {string} message - Mensagem a exibir
- * @param {string} type - Tipo de mensagem ('success', 'error', 'info')
+ * Exibir mensagens
  */
 function showMessage(message, type = 'info') {
-    // Verificar se estamos na página de cadastro
     const isCadastroPage = window.location.pathname.includes('cadastro');
-    
     if (isCadastroPage) {
-        // Na página de cadastro, logar no console e mostrar alert
-        if (type === 'error') {
-            console.error(message);
-            alert(message); // Mostrar alert para erros também
-        } else if (type === 'success') {
-            alert(message);
-        } else {
-            console.log(message);
-        }
+        alert(message);
     } else {
-        // Em outras páginas, usar o comportamento padrão
         const messageDiv = document.getElementById('mensagem');
         if (messageDiv) {
             messageDiv.textContent = message;
             messageDiv.className = `mensagem mensagem-${type}`;
             messageDiv.style.display = 'block';
-            
-            // Esconder a mensagem após 5 segundos
             setTimeout(() => {
                 messageDiv.style.display = 'none';
             }, 5000);
+        } else {
+            alert(message);
         }
     }
 }
 
 /**
- * Função para recuperar senha
- * @param {string} email - Email do usuário
- * @returns {Promise} - Retorna o resultado da operação
+ * Recuperar senha (Mock)
  */
 async function resetPassword(email) {
     try {
-        const { data, error } = await window.supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin + '/index.html'
-        });
+        const users = getUsersFromStorage();
+        const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
 
-        if (error) {
-            // Lançar o erro para ser capturado pelo script.js e exibir no modal
-            throw error;
+        if (!user) {
+            throw new Error('E-mail não encontrado.');
         }
 
-        return data;
+        return { data: true };
     } catch (error) {
         console.error('Erro ao recuperar senha:', error.message);
-        // Lançar o erro para ser capturado pelo script.js e exibir no modal
         throw error;
     }
 }
 
 /**
- * Função para atualizar a senha do usuário
- * @param {string} newPassword - A nova senha
- * @returns {Promise} - Retorna o resultado da operação
+ * Atualizar senha (Mock)
  */
 async function updatePassword(newPassword) {
     try {
-        const { data, error } = await window.supabase.auth.updateUser({
-            password: newPassword
-        });
-
-        if (error) {
-            throw error;
+        const currentUser = await getCurrentUser();
+        if (!currentUser) {
+            throw new Error('Usuário não autenticado.');
         }
 
-        alert('Senha redefinida com sucesso! Você será redirecionado para o login.');
-        window.location.href = 'index.html';
+        const users = getUsersFromStorage();
+        const userIndex = users.findIndex(u => u.id === currentUser.id);
 
-        return data;
+        if (userIndex !== -1) {
+            users[userIndex].password = newPassword;
+            saveUsersToStorage(users);
+            currentUser.password = newPassword;
+            localStorage.setItem('foliolabs_session', JSON.stringify(currentUser));
+        }
+
+        alert('Senha redefinida com sucesso! Redirecionando para o login.');
+        window.location.href = getPath('login');
+
+        return { user: currentUser };
     } catch (error) {
         console.error('Erro ao atualizar senha:', error.message);
         alert('Erro ao redefinir senha: ' + error.message);
@@ -245,24 +232,18 @@ async function updatePassword(newPassword) {
 }
 
 /**
- * Função para verificar autenticação ao carregar a página
- * Redireciona para login se o usuário não estiver autenticado
+ * Verificar autenticação nas páginas protegidas
  */
 async function checkAuth() {
-    // Só verifica se o supabase está carregado
-    if (typeof window.supabase === 'undefined' || !window.supabase.auth) {
-        return; // Sai se o supabase não estiver pronto
-    }
-    
     const user = await getCurrentUser();
-    
-    // Se não estiver autenticado e não estiver na página de login/cadastro, redirecionar
     const currentPage = window.location.pathname;
     const isLoginPage = currentPage.includes('index.html') || currentPage.endsWith('/');
     const isCadastroPage = currentPage.includes('cadastro.html');
-    
-    if (!user && !isLoginPage && !isCadastroPage) {
-        window.location.href = '../index.html';
+    const isEsqueceuSenhaPage = currentPage.includes('esqueceu-senha.html');
+    const isUpdatePasswordPage = currentPage.includes('update-password.html');
+
+    if (!user && !isLoginPage && !isCadastroPage && !isEsqueceuSenhaPage && !isUpdatePasswordPage) {
+        window.location.href = getPath('login');
     }
 }
 
@@ -274,4 +255,5 @@ window.getCurrentUser = getCurrentUser;
 window.isAuthenticated = isAuthenticated;
 window.checkAuth = checkAuth;
 window.resetPassword = resetPassword;
+window.updatePassword = updatePassword;
 

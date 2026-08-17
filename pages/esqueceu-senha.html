@@ -26,10 +26,9 @@
         </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.js"></script>
-    
+    <!-- Configuração e Dados Demo (Modo Demonstração Frontend) -->
     <script src="../js/supabase_config.js"></script>
-    
+    <script src="../js/init.js"></script>
     <script src="../js/auth.js"></script>
     
     <!-- Script principal para lidar com o formulário de recuperação -->
@@ -45,18 +44,17 @@
 
                 const email = forgotEmailInput.value;
 
-                // Chama a função do Supabase para enviar o email de recuperação
-                const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                    redirectTo: window.location.origin + '/pages/update-password.html' // URL para onde o usuário será redirecionado após clicar no link
-                });
-
-                if (error) {
-                    messageDiv.style.color = 'red';
-                    messageDiv.textContent = 'Erro ao enviar o email: ' + error.message;
-                } else {
+                try {
+                    await window.resetPassword(email);
                     messageDiv.style.color = 'green';
-                    messageDiv.textContent = 'Link de recuperação enviado para ' + email + '. Por favor, verifique sua caixa de entrada.';
+                    messageDiv.textContent = 'E-mail de recuperação confirmado para ' + email + '. Redirecionando...';
                     forgotPasswordForm.reset();
+                    setTimeout(() => {
+                        window.location.href = 'update-password.html';
+                    }, 1500);
+                } catch (error) {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = error.message || 'Erro ao enviar recuperação.';
                 }
             });
         });

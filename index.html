@@ -15,6 +15,14 @@
             <img class="logo_login" src="img/logo.png" alt="logo">
 	            <h1 class="login_h3">Login</h1>
 	            
+	            <!-- Aviso do Modo Demonstração -->
+	            <div class="demo-notice" style="background-color: #f0f4f9; border: 1px solid #d0d7de; border-radius: 8px; padding: 12px 15px; margin: 0 0 15px 0; text-align: center; font-size: 0.85rem; color: #333;">
+	                <p style="margin: 0 0 6px 0; font-weight: bold;">💡 Modo de Demonstração</p>
+	                <p style="margin: 2px 0;"><strong>E-mail:</strong> <code style="background: #e1e4e8; padding: 2px 5px; border-radius: 4px;">demo@foliolabs.com</code></p>
+	                <p style="margin: 2px 0;"><strong>Senha:</strong> <code style="background: #e1e4e8; padding: 2px 5px; border-radius: 4px;">123456</code></p>
+	                <button type="button" id="preencher-demo" style="margin-top: 8px; background-color: #323232; color: #fff; border: none; border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; cursor: pointer; transition: background 0.2s;">Usar Usuário Demo</button>
+	            </div>
+	            
 	            <!-- Formulário de Login Padrão -->
 	            <form id="login-form">
 	                <input type="email" name="email" class="input_dados" id="email" placeholder="Digite seu email" required>
@@ -26,11 +34,21 @@
         </div>
     </main>
 
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.js"></script>
-    
-    <!-- Configuração do Supabase -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnDemo = document.getElementById('preencher-demo');
+            if (btnDemo) {
+                btnDemo.addEventListener('click', function() {
+                    document.getElementById('email').value = 'demo@foliolabs.com';
+                    document.getElementById('senha').value = '123456';
+                });
+            }
+        });
+    </script>
+
+    <!-- Configuração e Dados Demo (Modo Demonstração Frontend) -->
     <script src="js/supabase_config.js"></script>
+    <script src="js/init.js"></script>
     
     <!-- Módulos de Autenticação e Portfólio -->
     <script src="js/auth.js"></script>

@@ -62,11 +62,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 2. Exibir nome do usuário
     const nomeUserElement = document.getElementById('nome_user');
-    if (nomeUserElement && user && user.user_metadata && user.user_metadata.name) {
-        // O Supabase salva o nome completo no user_metadata.name
+    if (nomeUserElement && user && user.name) {
+        nomeUserElement.textContent = user.name;
+    } else if (nomeUserElement && user && user.user_metadata && user.user_metadata.name) {
         nomeUserElement.textContent = user.user_metadata.name;
     } else if (nomeUserElement && user && user.email) {
-        // Fallback: usar o email e remover a parte do domínio
         const nome = user.email.split('@')[0];
         nomeUserElement.textContent = nome.charAt(0).toUpperCase() + nome.slice(1);
     } else if (nomeUserElement) {

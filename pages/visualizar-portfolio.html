@@ -46,9 +46,9 @@
         <div class="loading">Carregando portfólio...</div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.js"></script>
-    
+    <!-- Configuração e Dados Demo (Modo Demonstração Frontend) -->
     <script src="../js/supabase_config.js"></script>
+    <script src="../js/init.js"></script>
 
     <script src="../js/auth.js"></script>
     <script src="../js/portfolio.js"></script>
@@ -59,10 +59,6 @@
          */
         async function loadPortfolioViewer() {
             try {
-                // Verificar se o Supabase está carregado
-                if (!window.supabase) {
-                    throw new Error('Supabase não está carregado');
-                }
 
                 // Verificar se a função getPortfolioById está disponível
                 if (!window.getPortfolioById) {
